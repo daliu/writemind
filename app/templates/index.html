@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<style>
+div.jumbotron.notebook{
+    color:#fff;
+    text-align:center;
+    background:url("{{ url_for('static', filename = 'images/notebook.jpeg') }}");
+    background-size:cover;
+    background-position:center;
+    padding-top:100px;
+    padding-bottom:100px;
+}
+</style>
+
+<main role="main">
+    <div class="jumbotron notebook" stlye="background-image:;">
+        <div class="container">
+            <h1>
+                {% if current_user.username %}
+                    <h1 class="text-warning">{{ _('Hello, %(username)s!', username = current_user.username) }}
+                    <br />
+                {% endif %}
+                {{ _('Welcome to') }} WriteMind!
+                <br><br><br><br><br><br>
+            </h1>
+
+
+            {% if current_user == user.username %}
+                <div class="container">
+                {% for post in posts %}
+                    {% if post.is_published %}
+                        <div><p> {{ _('%(username)s says:', username=post.author.username) }}
+                            <b>{{ _('%(body)s', body = post.body) }}</b>
+                        </p></div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if prev_url %}
+                    <a href="{{ prev_url }}">{{ _('Newer posts') }}</a>
+                {% endif %}
+
+
+                {% if next_url %}
+                    <a href="{{ next_url }}">{{ _('Older posts') }}</a>
+                {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,73 @@
+2018-02-04 02:49:18,286 ERROR: Exception on / [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+    context)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/default.py", line 507, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: user.emotions
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1610, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1831, in preprocess_request
+    rv = func()
+  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 41, in before_request
+    if current_user.is_authenticated:
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/local.py", line 347, in __getattr__
+    return getattr(self._get_current_object(), name)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/local.py", line 306, in _get_current_object
+    return self.__local()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 26, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 335, in _get_user
+    current_app.login_manager._load_user()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/login_manager.py", line 359, in _load_user
+    return self.reload_user()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/login_manager.py", line 321, in reload_user
+    user = self.user_callback(user_id)
+  File "/Users/davidliu/Website/HMH-project/app/models.py", line 11, in load_user
+    return User.query.get(int(id))
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 871, in get
+    ident, loading.load_on_ident)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 905, in _get_impl
+    return fallback_fn(self, key)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/loading.py", line 231, in load_on_ident
+    return q.one()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 2837, in one
+    ret = self.one_or_none()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 2807, in one_or_none
+    ret = list(self)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 2878, in __iter__
+    return self._execute_and_instances(context)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/orm/query.py", line 2901, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 948, in execute
+    return meth(self, multiparams, params)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/sql/elements.py", line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 1200, in _execute_context
+    context)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 1413, in _handle_dbapi_exception
+    exc_info
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/util/compat.py", line 186, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+    context)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/sqlalchemy/engine/default.py", line 507, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: user.emotions [SQL: 'SELECT user.id AS user_id, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash, user.about_me AS user_about_me, user.last_seen AS user_last_seen, user.emotions AS user_emotions, user.thoughts AS user_thoughts \nFROM user \nWHERE user.id = ?'] [parameters: (3,)] (Background on this error at: http://sqlalche.me/e/e3q8)
+2018-02-04 02:50:19,803 INFO: WriteMind startup [in /Users/davidliu/Website/HMH-project/app/__init__.py:56]

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+    	<h1>{{ current_user.username }}'s entries</h1>
+		{% for entry in entries %}
+		<div class="container">
+			<h3>{{ entry.title }}</h3>
+			<p><b>{{ entry.content }}</b></p>
+		</div>
+		{% endfor %}
+    </div>
+  </div>
+</main>
+
+{% endblock %}

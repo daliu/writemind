@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+      {% if title %}
+        <title>{{ title }} - WriteMind</title>
+      {% else %}
+        <title>Welcome to WriteMind</title>
+      {% endif %}
+      <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}"> -->
+      <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+
+  </head>
+
+  <style>      
+    body {
+      padding-top: 100px;
+    }
+    footer {
+      padding-bottom: 70px;
+    }
+  </style>
+
+  
+
+  <body>
+    <!-- Begin Bootstrap Header Nav Bar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">WriteMind</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item mx-0 mx-lg-2">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('index') }}">Home</a>
+            </li>
+
+            {% if current_user.is_anonymous %}
+
+            <li class="nav-item mx-0 mx-sm-2">
+              <a class="green nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('login') }}">Login</a>
+            </li>
+
+          {% else %}
+
+            <li class="nav-item mx-0 mx-sm-2">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+            </li>
+            <li class="nav-item mx-0 mx-sm-2">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('create') }}">Compose</a>
+            </li>
+            <li class="nav-item mx-0 mx-sm-2">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('entries') }}">My Entries</a>
+            </li>
+            <li class="nav-item mx-0 mx-sm-2">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+            {% endif %}
+
+          </ul>
+      </div>
+    </nav>
+    <!-- End Bootstrap Header Nav Bar -->
+
+
+    <header class="header">
+    <div class="container margin-top">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        
+            <div class="row">
+              {% for message in messages %}
+                  <div class="alert alert-info" role="alert">{{ message }}</div>
+              {% endfor %}
+            </div>
+
+      {% endif %}
+    {% endwith %}
+    </div>
+    </header>
+
+      <section id="messages">
+        <div class="container">
+          {%block content%}
+          {%endblock%}
+        </div>
+      </section>
+
+
+
+    <footer class="py-5 bg-dark">
+        <div class="container">
+          <p class="m-0 text-center text-white"> &copy; WriteMind 2018</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+  </body>
+
+</html>
+
+<!-- Template comes from the following URL: -->
+<!-- http://getbootstrap.com/docs/4.0/examples/jumbotron/ -->

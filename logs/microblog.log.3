@@ -1,0 +1,116 @@
+2018-02-04 11:11:05,991 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 269, in detail
+    all_or_nothing_thinking = all_or_nothing_thinking(post.content)
+UnboundLocalError: local variable 'all_or_nothing_thinking' referenced before assignment
+2018-02-04 11:12:21,113 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:12:22,175 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 269, in detail
+    all_or_none = all_or_nothing_thinking(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 232, in all_or_nothing_thinking
+    found_words = [word for word in words for list_w in all_or_nothing_list if list_w == w]
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 232, in <listcomp>
+    found_words = [word for word in words for list_w in all_or_nothing_list if list_w == w]
+NameError: name 'w' is not defined
+2018-02-04 11:13:48,525 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:13:53,733 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 272, in detail
+    label = labeling(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in labeling
+    found_words = [word for word in words if sia.polarity_scores(w)['neg'] > 0.75]
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in <listcomp>
+    found_words = [word for word in words if sia.polarity_scores(w)['neg'] > 0.75]
+NameError: name 'sia' is not defined
+2018-02-04 11:14:18,967 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:14:21,425 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 272, in detail
+    label = labeling(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in labeling
+    found_words = [word for word in words if SIA.polarity_scores(w)['neg'] > 0.75]
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in <listcomp>
+    found_words = [word for word in words if SIA.polarity_scores(w)['neg'] > 0.75]
+NameError: name 'w' is not defined
+2018-02-04 11:14:35,026 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:14:37,221 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 272, in detail
+    label = labeling(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in labeling
+    found_words = [word for word in words if SIA.polarity_scores(word)['neg'] > 0.75]
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in <listcomp>
+    found_words = [word for word in words if SIA.polarity_scores(word)['neg'] > 0.75]
+TypeError: polarity_scores() missing 1 required positional argument: 'text'
+2018-02-04 11:16:33,594 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Create entry') }}{% endblock %}
+
+{% block content_title %}{{ _('Create entry') }}{% endblock %}
+
+{% block app_content %}
+<!DOCTYPE html>
+
+<h1>7 Day Analysis</h1>
+
+
+<!-- bar chart canvas element -->
+<div class="container-fluid text-center mb-200"><h1>Sentiment of Text</h1>
+<canvas id="polarity_chart" width="600" height="400"></canvas></div>
+
+<div class="container-fluid text-center mb-200"><h1>Attention (Focus) of Text</h1>
+<canvas id="attention_chart" width="600" height="400"></canvas></div>
+
+<div class="container-fluid text-center mb-200"><h1>Sensitivity (Sympathy) of Text</h1>
+<canvas id="sensitivity_chart" width="600" height="400"></canvas></div>
+
+<div class="container-fluid text-center mb-200"><h1>Pleasantness of Text</h1>
+<canvas id="pleasantness_chart" width="600" height="400"></canvas></div>
+
+
+<script>
+   // bar chart data
+   var polarityData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+         data : [{% for item in polarity %}
+                      {{item}},
+                    {% endfor %}]
+      }
+      ]
+   };
+
+   var attentionData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+         data : [{% for item in attention %}
+                      {{item}},
+                    {% endfor %}]
+      }
+      ]
+   };
+
+   var sensitivityData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+         data : [{% for item in sensitivity %}
+                      {{item}},
+                    {% endfor %}]
+      }
+      ]
+   };
+
+   var pleasantnessData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+         data : [{% for item in pleasantness %}
+                      {{item}},
+                    {% endfor %}]
+      }
+      ]
+   };
+
+ 
+   
+ 
+   // Polarity Bar Chart
+   var polarity_chart = document.getElementById("polarity_chart").getContext("2d");
+   polarity_steps = 20
+   polarity_max = 10
+   new Chart(polarity_chart).Line(polarityData, {
+        scaleOverride: true,
+        scaleSteps: polarity_steps,
+        scaleStepWidth: Math.ceil(polarity_max / polarity_steps),
+        scaleStartValue: -10,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        options: {
+            title: {
+                display: true,
+                text: 'Sentiment of Writing'
+            }
+        }
+   });
+
+
+   // Attention Bar Chart
+   var attention_chart = document.getElementById("attention_chart").getContext("2d");
+   attention_steps = 21
+   attention_max = 10
+   new Chart(attention_chart).Line(attentionData, {
+        scaleOverride: true,
+        scaleSteps: attention_steps,
+        scaleStepWidth: Math.ceil(attention_max / attention_steps),
+        scaleStartValue: -11,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        options: {
+            title: {
+                display: true,
+                text: 'Attention/Focus of Writing'
+            }
+        }
+   });
+
+
+   // Sensitivity Bar Chart
+   var sensitivity_chart = document.getElementById("sensitivity_chart").getContext("2d");
+   sensitivity_steps = 25
+   sensitivity_max = 15
+   new Chart(sensitivity_chart).Line(sensitivityData, {
+        scaleOverride: true,
+        scaleSteps: sensitivity_steps,
+        scaleStepWidth: Math.ceil(sensitivity_max / sensitivity_steps),
+        scaleStartValue: -15,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        options: {
+            title: {
+                display: true,
+                text: 'sensitivity/Focus of Writing'
+            }
+        }
+   });
+
+   // pleasantness Bar Chart
+   var pleasantness_chart = document.getElementById("pleasantness_chart").getContext("2d");
+   pleasantness_steps = 10
+   pleasantness_max = 10
+   new Chart(pleasantness_chart).Line(pleasantnessData, {
+        scaleOverride: true,
+        scaleSteps: pleasantness_steps,
+        scaleStepWidth: Math.ceil(pleasantness_max / pleasantness_steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        options: {
+            title: {
+                display: true,
+                text: 'pleasantness/Focus of Writing'
+            }
+        }
+   });
+
+
+
+</script>
+</body></html>
+{% endblock %}

@@ -1,0 +1,65 @@
+
+  <table class="table table-hover table-responsive table-striped table-sm">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('user', username = post.author.username) }}">
+                    <img src="{{ post.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                {% set user_link %}
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    {{ post.author.username }}
+                </a>
+                {% endset %}
+            </td>
+                <!-- {{ _('%(username)s said %(when)s',
+                    username = user_link, when = moment(post.timestamp).fromNow()) }} -->
+
+            <td width="70px" class="col-md-12">{{ _('%(username)s says', username = user_link)}}:
+
+                {% if post.content|length > 250 %}
+                    <br>{{ _('%(content)s...', content = post.content[:250]) }}</td>
+                {% else %}
+                    <br>{{ _('%(content)s', content = post.content) }}</td>
+                {% endif %}
+
+            {% if post.polarity > 0.5 %}
+                <td class="col-md-12 bg-success text-light"> {{ _('Sentiment') }}: 
+            {% elif post.polarity > 0 %}
+                <td class="col-md-12 bg-primary text-light"> {{ _('Sentiment') }}: 
+            {% elif post.polarity > -0.5 %}
+                <td class="col-md-12 bg-warning text-dark"> {{ _('Sentiment') }}: 
+            {% else %}
+                <td class="col-md-12 bg-danger text-light"> {{ _('Sentiment') }}: 
+            {% endif %}
+
+
+                {{ post.polarity }}</td>
+            <!-- <td class="col-md-12"> {{ _('Subjectivity') }}: 
+                {{ post.subjectivity }}</td>
+            <td class="col-md-12"> {{ _('Mood_tags') }}: 
+                {{ post.mood_tags }}</td>
+            <td class="col-md-12"> {{ _('Word_Semantics') }}: 
+                {{ post.word_semantics }}</td>
+            <td class="col-md-12"> {{ _('Attention') }}: 
+                {{ post.attention }}</td>
+            <td class="col-md-12"> {{ _('Sensitivity') }}: 
+                {{ post.sensitivity }}</td>
+            <td class="col-md-12"> {{ _('Pleasantness') }}: 
+                {{ post.pleasantness }}</td>
+            <td class="col-md-12"> {{ _('Aptitude') }}: 
+                {{ post.aptitude }}</td>
+            <td class="col-md-12"> {{ _('Depression_factor') }}: 
+                {{ post.depression_factor }}</td> -->
+            <td>{{ _('Created On') }}: <br>{{ moment(post.timestamp).fromNow() }}</td>
+            <td>
+                {% if post.language and post.language != g.locale %}
+                    <br><br>
+                    <a href="#">{{ _('Translate') }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+        <p></p>
+    </table>

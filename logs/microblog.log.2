@@ -1,0 +1,105 @@
+2018-02-04 11:16:35,992 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 272, in detail
+    label = labeling(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in labeling
+    sia = SIA()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/sentiment/vader.py", line 200, in __init__
+    self.lexicon_file = nltk.data.load(lexicon_file)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 834, in load
+    opened_resource = _open(resource_url)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 952, in _open
+    return find(path_, path + ['']).open()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 673, in find
+    raise LookupError(resource_not_found)
+LookupError: 
+**********************************************************************
+  Resource [93mvader_lexicon[0m not found.
+  Please use the NLTK Downloader to obtain the resource:
+
+  [31m>>> import nltk
+  >>> nltk.download('vader_lexicon')
+  [0m
+  Searched in:
+    - '/Users/davidliu/nltk_data'
+    - '/usr/share/nltk_data'
+    - '/usr/local/share/nltk_data'
+    - '/usr/lib/nltk_data'
+    - '/usr/local/lib/nltk_data'
+    - '/Users/davidliu/.virtualenvs/default3/bin/../nltk_data'
+    - '/Users/davidliu/.virtualenvs/default3/bin/../lib/nltk_data'
+    - ''
+**********************************************************************
+
+2018-02-04 11:17:59,146 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:18:00,498 ERROR: Exception on /greg/i-am-a-danger-to-myself/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+Traceback (most recent call last):
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
+    raise value
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 272, in detail
+    label = labeling(post.content)
+  File "/Users/davidliu/Website/writemind/app/algos.py", line 256, in labeling
+    sia = SIA()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/sentiment/vader.py", line 200, in __init__
+    self.lexicon_file = nltk.data.load(lexicon_file)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 834, in load
+    opened_resource = _open(resource_url)
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 952, in _open
+    return find(path_, path + ['']).open()
+  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/nltk/data.py", line 673, in find
+    raise LookupError(resource_not_found)
+LookupError: 
+**********************************************************************
+  Resource [93mvader_lexicon[0m not found.
+  Please use the NLTK Downloader to obtain the resource:
+
+  [31m>>> import nltk
+  >>> nltk.download('vader_lexicon')
+  [0m
+  Searched in:
+    - '/Users/davidliu/nltk_data'
+    - '/usr/share/nltk_data'
+    - '/usr/local/share/nltk_data'
+    - '/usr/lib/nltk_data'
+    - '/usr/local/lib/nltk_data'
+    - '/Users/davidliu/.virtualenvs/default3/bin/../nltk_data'
+    - '/Users/davidliu/.virtualenvs/default3/bin/../lib/nltk_data'
+    - ''
+**********************************************************************
+
+2018-02-04 11:18:12,782 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:19:39,716 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:22:49,411 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:23:55,585 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:25:15,704 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:26:02,185 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:26:13,701 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:26:38,352 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:27:06,791 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:27:41,301 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]

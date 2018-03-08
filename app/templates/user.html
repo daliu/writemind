@@ -1,0 +1,79 @@
+
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<style>
+	td {
+		padding-right: 10px;
+	}
+	posts {
+
+	}
+</style>
+
+	<table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(128) }}"></td>
+            <td>
+            	<h1>{{ _('User') }}: {{ user.username }}</h1>
+
+	            {% if user.about_me %}
+	            	<p>{{ user.about_me }}</p>
+	            {% endif %}
+
+	        	{% if user.last_seen %}
+	        		<p>{{ _('Last seen on') }}: {{ moment(user.last_seen).format('LLL') }}</p>
+	        	{% endif %}
+
+	            {% if user == current_user %}
+                <p><a href="{{ url_for('edit_profile') }}">{{ _('Edit your profile') }}</a></p>
+                {% endif %}
+        	</td>
+        </tr>
+    </table>
+
+    <hr />
+
+    <h1>Check Up Form</h1>
+    <form action="{% block form_action %}{{ url_for('user', username = current_user.username) }}{% endblock %}" class="form-horizontal" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+
+      <div class="col-lg-12 radio">
+        
+        <label class="bg-danger text-white" style="width:10%; height:10%"><img src="{{ url_for('static', filename = 'images/very_bad.svg') }}" class="img-thumbnail" alt="Responsive Image"><input id="emotions" type="radio" name="optradio">Very Bad</label>
+        
+        <label class="bg-warning" style="width:10%; height:10%"><img src="{{ url_for('static', filename = 'images/bad.svg') }}" class="img-thumbnail" alt="Responsive Image"><input id="emotions" type="radio" name="optradio">Bad</label>
+        
+        <label class="bg-grey" style="width:10%; height:10%"><img src="{{ url_for('static', filename = 'images/neutral.svg') }}" class="img-thumbnail" alt="Responsive Image"><input id="emotions" type="radio" name="optradio">Neutral</label>
+        
+        <label class="bg-primary" style="width:10%; height:10%"><img src="{{ url_for('static', filename = 'images/good.svg') }}" class="img-thumbnail" alt="Responsive Image"><input id="emotions" type="radio" name="optradio">Good</label>
+        
+        <label class="bg-success text-white" style="width:10%; height:10%"><img src="{{ url_for('static', filename = 'images/very_good.svg') }}" class="img-thumbnail" alt="Responsive Image"><input id="emotions" type="radio" name="optradio">Very Good</label>
+
+        {% for error in form.emotions.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group">
+        {{ form.thoughts.label }}
+      <div class="col-lg-12">
+        {{ form.thoughts }}
+        {% for error in form.thoughts.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-lg-1">
+        {{ form.submit(class = "btn btn-success") }}
+        <a class="btn btn-default" href="{{ url_for('user', username = current_user.username) }}">Cancel</a>
+      </div>
+    </div>
+
+  </form>
+{% endblock %}
