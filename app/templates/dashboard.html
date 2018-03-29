@@ -23,6 +23,8 @@
 <div class="container-fluid text-center mb-200"><h1>Pleasantness of Text</h1>
 <canvas id="pleasantness_chart" width="600" height="400"></canvas></div>
 
+<div class="container-fluid text-center mb-200"><h1>Length of Text</h1>
+<canvas id="length_chart" width="600" height="400"></canvas></div>
 
 <script>
    // bar chart data
@@ -35,7 +37,7 @@
             fillColor: "rgba(151,187,205,0.2)",
             strokeColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
-         data : [{% for item in polarity %}
+            data : [{% for item in polarity %}
                       {{item}},
                     {% endfor %}]
       }
@@ -51,7 +53,7 @@
             fillColor: "rgba(151,187,205,0.2)",
             strokeColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
-         data : [{% for item in attention %}
+            data : [{% for item in attention %}
                       {{item}},
                     {% endfor %}]
       }
@@ -67,7 +69,7 @@
             fillColor: "rgba(151,187,205,0.2)",
             strokeColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
-         data : [{% for item in sensitivity %}
+            data : [{% for item in sensitivity %}
                       {{item}},
                     {% endfor %}]
       }
@@ -83,7 +85,7 @@
             fillColor: "rgba(151,187,205,0.2)",
             strokeColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
-         data : [{% for item in pleasantness %}
+            data : [{% for item in pleasantness %}
                       {{item}},
                     {% endfor %}]
       }
@@ -95,13 +97,14 @@
  
    // Polarity Bar Chart
    var polarity_chart = document.getElementById("polarity_chart").getContext("2d");
-   polarity_steps = 20
-   polarity_max = 10
+   polarity_steps = 20;
+   polarity_max = 10;
+   
    new Chart(polarity_chart).Line(polarityData, {
-        scaleOverride: true,
+        scaleOverride: false,
         scaleSteps: polarity_steps,
         scaleStepWidth: Math.ceil(polarity_max / polarity_steps),
-        scaleStartValue: -10,
+        scaleStartValue: Math.min.apply(0, polarityData["datasets"][0]["data"]),
         scaleShowVerticalLines: true,
         scaleShowGridLines : true,
         barShowStroke : true,
@@ -117,13 +120,13 @@
 
    // Attention Bar Chart
    var attention_chart = document.getElementById("attention_chart").getContext("2d");
-   attention_steps = 21
-   attention_max = 10
+   attention_steps = 21;
+   attention_max = 10;
    new Chart(attention_chart).Line(attentionData, {
-        scaleOverride: true,
+        scaleOverride: false,
         scaleSteps: attention_steps,
         scaleStepWidth: Math.ceil(attention_max / attention_steps),
-        scaleStartValue: -11,
+        scaleStartValue: Math.min.apply(0, attentionData["datasets"][0]["data"]),
         scaleShowVerticalLines: true,
         scaleShowGridLines : true,
         barShowStroke : true,
@@ -139,13 +142,13 @@
 
    // Sensitivity Bar Chart
    var sensitivity_chart = document.getElementById("sensitivity_chart").getContext("2d");
-   sensitivity_steps = 25
-   sensitivity_max = 15
+   sensitivity_steps = 25;
+   sensitivity_max = 15;
    new Chart(sensitivity_chart).Line(sensitivityData, {
-        scaleOverride: true,
+        scaleOverride: false,
         scaleSteps: sensitivity_steps,
         scaleStepWidth: Math.ceil(sensitivity_max / sensitivity_steps),
-        scaleStartValue: -15,
+        scaleStartValue: Math.min.apply(0, sensitivityData["datasets"][0]["data"]),
         scaleShowVerticalLines: true,
         scaleShowGridLines : true,
         barShowStroke : true,
@@ -160,13 +163,13 @@
 
    // pleasantness Bar Chart
    var pleasantness_chart = document.getElementById("pleasantness_chart").getContext("2d");
-   pleasantness_steps = 10
-   pleasantness_max = 10
+   pleasantness_steps = 10;
+   pleasantness_max = 10;
    new Chart(pleasantness_chart).Line(pleasantnessData, {
-        scaleOverride: true,
+        scaleOverride: false,
         scaleSteps: pleasantness_steps,
         scaleStepWidth: Math.ceil(pleasantness_max / pleasantness_steps),
-        scaleStartValue: 0,
+        scaleStartValue: Math.min.apply(0, pleasantnessData["datasets"][0]["data"]),
         scaleShowVerticalLines: true,
         scaleShowGridLines : true,
         barShowStroke : true,
@@ -175,6 +178,27 @@
             title: {
                 display: true,
                 text: 'pleasantness/Focus of Writing'
+            }
+        }
+   });
+
+   // Length Bar Chart
+   var pleasantness_chart = document.getElementById("length_chart").getContext("2d");
+   pleasantness_steps = 10;
+   pleasantness_max = 10;
+   new Chart(pleasantness_chart).Bar(pleasantnessData, {
+        scaleOverride: false,
+        scaleSteps: pleasantness_steps,
+        scaleStepWidth: Math.ceil(pleasantness_max / pleasantness_steps),
+        scaleStartValue: Math.min.apply(0, pleasantnessData["datasets"][0]["data"]),
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        options: {
+            title: {
+                display: true,
+                text: 'Length of Text'
             }
         }
    });

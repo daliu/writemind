@@ -1,4 +1,4 @@
-2018-02-04 02:50:56,918 ERROR: Exception on /create [POST] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+2018-02-04 02:58:57,929 ERROR: Exception on /create [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
 Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
     response = self.full_dispatch_request()
@@ -14,7 +14,7 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
     return func(*args, **kwargs)
-  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 226, in create
+  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 230, in create
     return render_template('create.html', title = 'Create New Entry', form = form)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 134, in render_template
     context, ctx.app)
@@ -55,7 +55,7 @@ Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/routing.py", line 1768, in build
     raise BuildError(endpoint, values, method, self)
 werkzeug.routing.BuildError: Could not build url for endpoint 'entries'. Did you forget to specify values ['username']?
-2018-02-04 02:52:13,033 ERROR: Exception on /create [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+2018-02-04 02:59:05,156 ERROR: Exception on /create [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
 Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
     response = self.full_dispatch_request()
@@ -71,7 +71,7 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
     return func(*args, **kwargs)
-  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 226, in create
+  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 230, in create
     return render_template('create.html', title = 'Create New Entry', form = form)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 134, in render_template
     context, ctx.app)
@@ -112,4 +112,7 @@ Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/routing.py", line 1768, in build
     raise BuildError(endpoint, values, method, self)
 werkzeug.routing.BuildError: Could not build url for endpoint 'entries'. Did you forget to specify values ['username']?
-2018-02-04 02:53:20,527 INFO: WriteMind startup [in /Users/davidliu/Website/HMH-project/app/__init__.py:56]
+2018-02-04 02:59:45,387 INFO: WriteMind startup [in /Users/davidliu/Website/HMH-project/app/__init__.py:56]
+2018-02-04 10:50:44,081 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 10:57:24,300 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:11:02,515 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]

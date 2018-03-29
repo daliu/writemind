@@ -292,10 +292,10 @@ def dashboard(username):
     posts = [post for post in current_user.get_own_entries()]
     posts.reverse()
     labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
-    polarity = [post.polarity * 10 for post in posts[-7:]]
-    attention = [1200 * post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7]]
-    sensitivity = [1000 * post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7]]
-    pleasantness = [500 * post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7]]
+    polarity = [post.polarity * 10 for post in posts[-7:] if post.polarity]
+    attention = [1200 * post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.attention]
+    sensitivity = [1000 * post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.sensitivity]
+    pleasantness = [500 * post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.pleasantness]
     return render_template('dashboard.html', polarity = polarity,
                             attention = attention, sensitivity = sensitivity,
                             pleasantness = pleasantness, labels = labels)

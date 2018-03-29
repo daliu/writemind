@@ -1,4 +1,4 @@
-2018-02-04 02:58:57,929 ERROR: Exception on /create [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+2018-02-04 11:27:42,022 ERROR: Exception on /greg/lots-of-problems-/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
 Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
     response = self.full_dispatch_request()
@@ -14,8 +14,8 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
     return func(*args, **kwargs)
-  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 230, in create
-    return render_template('create.html', title = 'Create New Entry', form = form)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 278, in detail
+    label = labeling)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 134, in render_template
     context, ctx.app)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 116, in _render
@@ -26,9 +26,9 @@ Traceback (most recent call last):
     reraise(exc_type, exc_value, tb)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/jinja2/_compat.py", line 37, in reraise
     raise value.with_traceback(tb)
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 1, in top-level template code
+  File "/Users/davidliu/Website/writemind/app/templates/detail.html", line 1, in top-level template code
     {% extends "base.html" %}
-  File "/Users/davidliu/Website/HMH-project/app/templates/base.html", line 2, in top-level template code
+  File "/Users/davidliu/Website/writemind/app/templates/base.html", line 2, in top-level template code
     {% import 'bootstrap/wtf.html' as wtf %}
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 1, in top-level template code
     {% block doc -%}
@@ -38,24 +38,15 @@ Traceback (most recent call last):
     {% block body -%}
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 23, in block "body"
     {% block content -%}
-  File "/Users/davidliu/Website/HMH-project/app/templates/base.html", line 105, in block "content"
+  File "/Users/davidliu/Website/writemind/app/templates/base.html", line 105, in block "content"
     {% block app_content %}{% endblock %}
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 29, in block "app_content"
-    <form action="{% block form_action %}{{ url_for('entries') }}{% endblock %}" class="form-horizontal" method="post">
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 29, in block "form_action"
-    <form action="{% block form_action %}{{ url_for('entries') }}{% endblock %}" class="form-horizontal" method="post">
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/helpers.py", line 333, in url_for
-    return appctx.app.handle_url_build_error(error, endpoint, values)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1805, in handle_url_build_error
-    reraise(exc_type, exc_value, tb)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
-    raise value
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/helpers.py", line 323, in url_for
-    force_external=external)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/routing.py", line 1768, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.BuildError: Could not build url for endpoint 'entries'. Did you forget to specify values ['username']?
-2018-02-04 02:59:05,156 ERROR: Exception on /create [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
+  File "/Users/davidliu/Website/writemind/app/templates/detail.html", line 13, in block "app_content"
+    {% include '_full_post.html' %}
+  File "/Users/davidliu/Website/writemind/app/templates/_full_post.html", line 68, in top-level template code
+    {% for word in all_or_nothing_thinking(post.content) %}
+jinja2.exceptions.UndefinedError: 'all_or_nothing_thinking' is undefined
+2018-02-04 11:29:37,403 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:29:49,442 ERROR: Exception on /greg/lots-of-problems-/ [GET] [in /Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py:1560]
 Traceback (most recent call last):
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1982, in wsgi_app
     response = self.full_dispatch_request()
@@ -71,8 +62,8 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_login/utils.py", line 261, in decorated_view
     return func(*args, **kwargs)
-  File "/Users/davidliu/Website/HMH-project/app/routes.py", line 230, in create
-    return render_template('create.html', title = 'Create New Entry', form = form)
+  File "/Users/davidliu/Website/writemind/app/routes.py", line 278, in detail
+    label = labeling)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 134, in render_template
     context, ctx.app)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/templating.py", line 116, in _render
@@ -83,9 +74,9 @@ Traceback (most recent call last):
     reraise(exc_type, exc_value, tb)
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/jinja2/_compat.py", line 37, in reraise
     raise value.with_traceback(tb)
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 1, in top-level template code
+  File "/Users/davidliu/Website/writemind/app/templates/detail.html", line 1, in top-level template code
     {% extends "base.html" %}
-  File "/Users/davidliu/Website/HMH-project/app/templates/base.html", line 2, in top-level template code
+  File "/Users/davidliu/Website/writemind/app/templates/base.html", line 2, in top-level template code
     {% import 'bootstrap/wtf.html' as wtf %}
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 1, in top-level template code
     {% block doc -%}
@@ -95,24 +86,36 @@ Traceback (most recent call last):
     {% block body -%}
   File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 23, in block "body"
     {% block content -%}
-  File "/Users/davidliu/Website/HMH-project/app/templates/base.html", line 105, in block "content"
+  File "/Users/davidliu/Website/writemind/app/templates/base.html", line 105, in block "content"
     {% block app_content %}{% endblock %}
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 29, in block "app_content"
-    <form action="{% block form_action %}{{ url_for('entries') }}{% endblock %}" class="form-horizontal" method="post">
-  File "/Users/davidliu/Website/HMH-project/app/templates/create.html", line 29, in block "form_action"
-    <form action="{% block form_action %}{{ url_for('entries') }}{% endblock %}" class="form-horizontal" method="post">
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/helpers.py", line 333, in url_for
-    return appctx.app.handle_url_build_error(error, endpoint, values)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/app.py", line 1805, in handle_url_build_error
-    reraise(exc_type, exc_value, tb)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/_compat.py", line 33, in reraise
-    raise value
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/flask/helpers.py", line 323, in url_for
-    force_external=external)
-  File "/Users/davidliu/.virtualenvs/default3/lib/python3.5/site-packages/werkzeug/routing.py", line 1768, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.BuildError: Could not build url for endpoint 'entries'. Did you forget to specify values ['username']?
-2018-02-04 02:59:45,387 INFO: WriteMind startup [in /Users/davidliu/Website/HMH-project/app/__init__.py:56]
-2018-02-04 10:50:44,081 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
-2018-02-04 10:57:24,300 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
-2018-02-04 11:11:02,515 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+  File "/Users/davidliu/Website/writemind/app/templates/detail.html", line 13, in block "app_content"
+    {% include '_full_post.html' %}
+  File "/Users/davidliu/Website/writemind/app/templates/_full_post.html", line 68, in top-level template code
+    {% for word in all_or_none %}
+TypeError: 'function' object is not iterable
+2018-02-04 11:30:27,776 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:31:17,156 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:34:46,620 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:37:23,283 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:39:13,791 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:39:37,966 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:40:22,222 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:40:35,191 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:41:46,766 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:41:58,162 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:42:25,475 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:42:59,601 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:43:42,998 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:46:59,173 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:47:59,358 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:56:50,628 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:57:38,938 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 11:58:27,788 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:01:01,319 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:01:14,474 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:01:23,455 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:01:35,415 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:01:55,782 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:02:15,472 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:02:39,444 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]
+2018-02-04 12:04:29,957 INFO: WriteMind startup [in /Users/davidliu/Website/writemind/app/__init__.py:56]

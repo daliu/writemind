@@ -1,4 +1,4 @@
-# HMH-project
+# WriteMind
 
 Main Framework Taken From:
 https://github.com/miguelgrinberg/microblog
