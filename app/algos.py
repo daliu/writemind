@@ -1,5 +1,4 @@
 import nltk
-nltk.download('stopwords')
 import nltk.classify.util
 import senticnet
 
