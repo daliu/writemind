@@ -101,7 +101,7 @@ requests-toolbelt==0.8.0
 s3transfer==0.1.12
 scipy==1.0.0
 Send2Trash==1.4.2
-sentic==0.0.7
+sentic==0.0.8
 senticnet==1.0.1
 simplegeneric==0.8.1
 six==1.11.0
