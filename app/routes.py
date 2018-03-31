@@ -208,7 +208,7 @@ def create():
                       language = language,
 
                       # Metric Info below
-                      semantics = semantics,
+                      word_semantics = semantics,
                       mood_tags = mood_tags,
                       sentiment = sentiment,
                       polarity = polarity,
