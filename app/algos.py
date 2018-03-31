@@ -6,6 +6,9 @@ import senticnet
 from textblob import TextBlob
 from senticnet.senticnet import Senticnet
 
+# Sentic Analysis from my package :P 
+from sentic import SenticPhrase # 0.0.6
+
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords, movie_reviews
 
@@ -30,6 +33,11 @@ DEPRESSION_WORDS = ["abandoned", "achy", "afraid", "agitated", "agony", "alone",
  "sobbing", "sorrowful", "suffering", "suicidal", "tearful", "touchy", "trapped", "uneasy", "unhappy",
  "unhinged", "unpredictable", "upset", "vulnerable", "wailing", "weak", "weepy", "withdrawn", "woeful",
  "wounded", "wretched"]
+
+ALL_OR_NOTHING_LIST = ["anything", "everything", "nothing", "always", "never", "anytime", "all", \
+                       "none", "whenever", "no one", "everyone", "nobody", "everybody", "no matter", "doesn't matter"]
+JUMPING_TO_CONCLUSIONS_LIST = ["must be", "definitely", " will think", "'ll think", "obvious","definite"]
+SHOULD_OR_MUST_LIST = ["should", "should've", "shouldn't"]
 
 STOPWORDS = set(stopwords.words("english"))
 
@@ -64,8 +72,6 @@ Think about what you might tell a family member or friend if they were in the sa
 <a href='https://positivepsychologyprogram.com/cognitive-distortions/#what'>Learn more about cognitive distortions</a> and how you can overcome them.
 """
 
-
-
 ################
 # Sentiment Prep
 ################
@@ -90,16 +96,10 @@ Think about what you might tell a family member or friend if they were in the sa
 
 # SENTIMENT_CLASSIFIER.show_most_informative_features()
 
-sn = Senticnet()
+# sn = Senticnet()
 
+sp = SenticPhrase("")
 
-def get_polarity_and_subjectivity(text):
-    '''
-    Uses TextBlob polarity and sentiment analysis.
-    '''
-    blob = TextBlob(text)
-    assessments = blob.sentiment_assessments.assessments
-    return {"polarity": float(blob.sentiment.polarity), "subjectivity": float(blob.sentiment.subjectivity)}
 
 def get_text_metrics(text):
     '''
@@ -107,33 +107,52 @@ def get_text_metrics(text):
     Don't need semantics, because we're already dissected the object for its variables. 
     Keeping dictionary for concepts in case we want to just return that in the future or something.
     '''
-    total_concept_words = 0
-    polarity_sum = 0
-    moodtags = set()
-    semantics = set()
-    sentics = {'attention': 0, 'sensitivity': 0, 'pleasantness': 0, 'aptitude': 0}
-    concepts = {}
+    return sp.info(text)
 
-    for word in text.split():
-        try:
-            if word not in concepts:
-                concepts[word] = sn.concept(word)
-                moodtags = moodtags.union(set(sn.moodtags(word)))
-                semantics = semantics.union(set(sn.semantics(word)))
-            polarity_sum += float(sn.polarity_intense(word))
-            other_measurements = sn.sentics(word)
-            for measurement in other_measurements:
-                sentics[measurement] += float(other_measurements[measurement])
-            total_concept_words += 1
-        except KeyError:
-            continue
+    # return {"total_concept_words": len(sp.get_sentics()),
+    #         "polarity_sum": sp.get_polarity(),
+    #         "moodtags": sp.get_moodtags(),
+    #         "semantics": sp.get_semantics(),
+    #         "other_measurements": sp.get_sentics()}
 
-    return {"total_concept_words": total_concept_words,
-            "polarity_sum": polarity_sum,
-            "moodtags": moodtags,
-            "semantics": semantics,
-            "other_measurements": sentics,
-            "concepts": concepts}
+    # total_concept_words = 0
+    # polarity_sum = 0
+    # moodtags = set()
+    # semantics = set()
+    # sentics = {'attention': 0, 'sensitivity': 0, 'pleasantness': 0, 'aptitude': 0}
+    # concepts = {}
+
+    ### Uses senticnet package, but can abstract with Sentic Package
+    # for word in text.split():
+    #     try:
+    #         if word not in concepts:
+    #             concepts[word] = sn.concept(word)
+    #             moodtags = moodtags.union(set(sn.moodtags(word)))
+    #             semantics = semantics.union(set(sn.semantics(word)))
+    #         polarity_sum += float(sn.polarity_intense(word))
+    #         other_measurements = sn.sentics(word)
+    #         for measurement in other_measurements:
+    #             sentics[measurement] += float(other_measurements[measurement])
+    #         total_concept_words += 1
+    #     except KeyError:
+    #         continue
+
+    # return {"total_concept_words": total_concept_words,
+    #         "polarity_sum": polarity_sum,
+    #         "moodtags": moodtags,
+    #         "semantics": semantics,
+    #         "other_measurements": sentics,
+    #         "concepts": concepts}
+
+  
+## This one uses TextBlob
+# def get_polarity_and_subjectivity(text):
+#     '''
+#     Uses TextBlob polarity and sentiment analysis.
+#     '''
+#     blob = TextBlob(text)
+#     assessments = blob.sentiment_assessments.assessments
+#     return {"polarity": float(blob.sentiment.polarity), "subjectivity": float(blob.sentiment.subjectivity)}
 
 
 def get_keywords(text):
@@ -193,7 +212,6 @@ def get_depression_factor(text):
     if text:
         occurances = sum([text.count(word) for word in DEPRESSION_WORDS])
         similarity = fuzz.ratio(text, ' '.join(DEPRESSION_WORDS))
-
         blob = TextBlob(text)
         return blob.sentiment.subjectivity + float(occurances) / len(text)
 
@@ -225,27 +243,20 @@ def get_cbt_metrics_and_suggestions(text):
 def all_or_nothing_thinking(s):
     words = nltk.tokenize.word_tokenize(s)
 
-    all_or_nothing_list = ["anything", "everything", "nothing", "always", "never", "anytime", "all", \
-            "none", "whenever", "no one", "everyone", "nobody", "everybody", "no matter", "doesn't matter"]
-    all_or_nothing_list.extend([x.capitalize() for x in all_or_nothing_list])
-
-    found_words = [word for word in words if word in all_or_nothing_list]    
+    ALL_OR_NOTHING_LIST.extend([x.capitalize() for x in ALL_OR_NOTHING_LIST])
+    found_words = [word for word in words if word in ALL_OR_NOTHING_LIST]    
     return found_words
 
 
 def jumping_to_conclusions(s):
     words = nltk.tokenize.word_tokenize(s)
-    
-    jumping_to_conclusions_list = ["must be", "definitely", " will think", "'ll think", "obvious","definite"]
-
-    found_words = [word for word in words if word in jumping_to_conclusions_list]    
+    found_words = [word for word in words if word in JUMPING_TO_CONCLUSIONS_LIST]    
     return found_words
 
 
 def should_or_must_thinking(s):
     words = nltk.tokenize.word_tokenize(s)
-    should_or_must_list = ["should", "should've", "shouldn't"]
-    found_words = [word for word in words if word in should_or_must_list]   
+    found_words = [word for word in words if word in SHOULD_OR_MUST_LIST]   
     return found_words
 
 

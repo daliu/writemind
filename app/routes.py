@@ -7,7 +7,8 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, EntryForm, R
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Entry
 from werkzeug.urls import url_parse
-from app.algos import get_polarity_and_subjectivity, get_text_metrics, get_depression_factor, all_or_nothing_thinking, jumping_to_conclusions, should_or_must_thinking, labeling
+# from app.algos import get_polarity_and_subjectivity, get_text_metrics, get_depression_factor, all_or_nothing_thinking, jumping_to_conclusions, should_or_must_thinking, labeling
+from app.algos import *
 from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from flask_babel import get_locale
@@ -175,24 +176,21 @@ def create():
 
     form = EntryForm()
     if form.validate_on_submit():
-
         
+        # Sentic Package
+        phrase_sentics = get_text_metrics(form.content.data)
 
-        # Textblob sentiment analysis
-        p_and_s = get_polarity_and_subjectivity(form.content.data)
-        polarity = p_and_s["polarity"]
-        subjectivity = p_and_s["subjectivity"]
+        semantics = ' '.join(phrase_sentics["semantics"])
+        mood_tags = ' '.join(phrase_sentics["moodtags"])
+        sentiment = phrase_sentics["sentiment"]
+        polarity = phrase_sentics["polarity"]
 
-        # Senticnet4 - Extract Word Concept information
-        word_metrics = get_text_metrics(form.content.data)
+        attention = phrase_sentics["sentics"]["attention"]
+        sensitivity = phrase_sentics["sentics"]["sensitivity"]
+        pleasantness = phrase_sentics["sentics"]["pleasantness"]
+        aptitude = phrase_sentics["sentics"]["aptitude"]
 
-        mood_tags = ' '.join(word_metrics["moodtags"])
-        word_semantics = ' '.join(word_metrics["semantics"])
 
-        attention = word_metrics["other_measurements"]["attention"]
-        sensitivity = word_metrics["other_measurements"]["sensitivity"]
-        pleasantness = word_metrics["other_measurements"]["pleasantness"]
-        aptitude = word_metrics["other_measurements"]["aptitude"]
 
         depression_factor = get_depression_factor(form.content.data)
 
@@ -210,14 +208,15 @@ def create():
                       language = language,
 
                       # Metric Info below
-                      polarity = polarity,
-                      subjectivity = subjectivity,
+                      semantics = semantics,
                       mood_tags = mood_tags,
-                      word_semantics = word_semantics,
+                      sentiment = sentiment,
+                      polarity = polarity,
                       attention = attention,
                       sensitivity = sensitivity,
                       pleasantness = pleasantness,
                       aptitude = aptitude,
+
                       depression_factor = depression_factor)
 
         db.session.add(entry)
@@ -280,24 +279,23 @@ def detail(username, slug):
 @app.route('/<username>/dashboard/')
 @login_required
 def dashboard(username):
-    # polarity = db.Column(db.Integer)
-    # subjectivity = db.Column(db.Integer)
-    # mood_tags = db.Column(db.String)
-    # word_semantics = db.Column(db.String)
-    # attention = db.Column(db.Integer)
-    # sensitivity = db.Column(db.Integer)
-    # pleasantness = db.Column(db.Integer)
-    # aptitude = db.Column(db.Integer)
-    # depression_factor = db.Column(db.Integer)
     posts = [post for post in current_user.get_own_entries()]
     posts.reverse()
     labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
-    polarity = [post.polarity * 10 for post in posts[-7:] if post.polarity]
-    attention = [1200 * post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.attention]
-    sensitivity = [1000 * post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.sensitivity]
-    pleasantness = [500 * post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) for post in posts[:7] if post.pleasantness]
-    return render_template('dashboard.html', polarity = polarity,
-                            attention = attention, sensitivity = sensitivity,
-                            pleasantness = pleasantness, labels = labels)
+    text_lengths = [len(post.content.split()) for post in posts[-7:]]
+    polarity = [post.polarity if post.polarity else 0 for post in posts[-7:]]
+    attention = [post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
+    sensitivity = [post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
+    pleasantness = [post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
+    depression_factor = [post.depression_factor for post in posts[-7:]]
+    return render_template('dashboard.html',
+                            labels = labels,
+                            text_lengths = text_lengths,
+                            polarity = polarity,
+                            attention = attention,
+                            sensitivity = sensitivity,
+                            pleasantness = pleasantness,
+                            depression_factor = depression_factor)
+
 
 
