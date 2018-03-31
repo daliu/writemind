@@ -179,17 +179,24 @@ def create():
         
         # Sentic Package
         phrase_sentics = get_text_metrics(form.content.data)
-
-        semantics = ' '.join(phrase_sentics["semantics"])
-        mood_tags = ' '.join(phrase_sentics["moodtags"])
+        
         sentiment = phrase_sentics["sentiment"]
         polarity = phrase_sentics["polarity"]
 
-        attention = phrase_sentics["sentics"]["attention"]
-        sensitivity = phrase_sentics["sentics"]["sensitivity"]
-        pleasantness = phrase_sentics["sentics"]["pleasantness"]
-        aptitude = phrase_sentics["sentics"]["aptitude"]
+        if not phrase_sentics["moodtags"] and not phrase_sentics["semantics"]
+        mood_tags = ' '.join(phrase_sentics["moodtags"])
+        semantics = ' '.join(phrase_sentics["semantics"])
 
+        if phrase_sentics["sentics"]:
+            attention = phrase_sentics["sentics"]["attention"]
+            sensitivity = phrase_sentics["sentics"]["sensitivity"]
+            pleasantness = phrase_sentics["sentics"]["pleasantness"]
+            aptitude = phrase_sentics["sentics"]["aptitude"]
+        else:
+            attention = 0.0
+            sensitivity = 0.0
+            pleasantness = 0.0
+            aptitude = 0.0
 
 
         depression_factor = get_depression_factor(form.content.data)
