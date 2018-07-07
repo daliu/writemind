@@ -97,8 +97,6 @@ Think about what you might tell a family member or friend if they were in the sa
 
 # sn = Senticnet()
 
-sp = SenticPhrase("")
-
 
 def get_text_metrics(text):
     '''
@@ -106,6 +104,7 @@ def get_text_metrics(text):
     Don't need semantics, because we're already dissected the object for its variables. 
     Keeping dictionary for concepts in case we want to just return that in the future or something.
     '''
+    sp = SenticPhrase("")
     return sp.info(text)
 
     # return {"total_concept_words": len(sp.get_sentics()),

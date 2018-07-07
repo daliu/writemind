@@ -15,7 +15,7 @@ from app.email import send_password_reset_email
 from flask_babel import get_locale
 from guess_language import guess_language
 from sqlalchemy import and_
-import stripe
+# import stripe
 
 SCALING_CONSTANT = 10
 
@@ -39,12 +39,12 @@ STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our',
              'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
              't', 'can', 'will', 'just', 'don', 'should', 'now']
 
-stripe_keys = {
-  'secret_key': os.environ['SECRET_KEY'],
-  'publishable_key': os.environ['PUBLISHABLE_KEY']
-}
+# stripe_keys = {
+#   'secret_key': os.environ['SECRET_KEY'],
+#   'publishable_key': os.environ['PUBLISHABLE_KEY']
+# }
 
-stripe.api_key = stripe_keys['secret_key']
+# stripe.api_key = stripe_keys['secret_key']
 
 CURRENT_EMOTIONS = ""
 CURRENT_THOUGHTS = ""
@@ -220,9 +220,11 @@ def create():
             language = ''
 
         # Build the Entry
+        slug = re.sub('[^\w]+', '-', form.title.data.lower())
+        # if current_user.get_own_entries()
         entry = Entry(title = form.title.data,
                       content = form.content.data,
-                      slug = re.sub('[^\w]+', '-', form.title.data.lower()),
+                      slug = slug,
                       is_published = (not form.is_draft.data),
                       timestamp = datetime.utcnow(),
                       author = current_user,
@@ -319,32 +321,32 @@ def dashboard(username):
                             depression_factor = depression_factor)
 
 
-@app.route('/charge', methods = ['GET', 'POST'])
-@login_required
-def charge():
-    if request.method == 'POST':
-        # Amount in cents
-        amount = 500
+# @app.route('/charge', methods = ['GET', 'POST'])
+# @login_required
+# def charge():
+#     if request.method == 'POST':
+#         # Amount in cents
+#         amount = 500
 
-        customer = stripe.Customer.create(
-            email = 'customer@example.com',
-            source = request.form['stripeToken']
-        )
+#         customer = stripe.Customer.create(
+#             email = 'customer@example.com',
+#             source = request.form['stripeToken']
+#         )
 
-        charge = stripe.Charge.create(
-            customer = customer.id,
-            amount = amount,
-            currency = 'usd',
-            description = 'Flask Charge'
-        )
+#         charge = stripe.Charge.create(
+#             customer = customer.id,
+#             amount = amount,
+#             currency = 'usd',
+#             description = 'Flask Charge'
+#         )
 
-        dollars = amount / 100
-        cents = amount % 100
-        flash('Thanks! Your payment of {} has been processed.'.format("$" + str(dollars) + "." + str(cents)))
-        return render_template('charge.html', amount = amount, key = stripe_keys['publishable_key'])
+#         dollars = amount / 100
+#         cents = amount % 100
+#         flash('Thanks! Your payment of {} has been processed.'.format("$" + str(dollars) + "." + str(cents)))
+#         return render_template('charge.html', amount = amount, key = stripe_keys['publishable_key'])
 
-    else:
-        return render_template('charge.html', key = stripe_keys['publishable_key'])
+#     else:
+#         return render_template('charge.html', key = stripe_keys['publishable_key'])
 
 @app.route('/daily_logs', methods = ['GET', 'POST'])
 @login_required
