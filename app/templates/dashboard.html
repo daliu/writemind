@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}{{ _('Create entry') }}{% endblock %}
+{% block title %}{{ _('Dashboard') }}{% endblock %}
 
-{% block content_title %}{{ _('Create entry') }}{% endblock %}
+{% block content_title %}{{ _('Dashboard') }}{% endblock %}
 
 {% block app_content %}
 <!DOCTYPE html>
@@ -103,6 +103,23 @@
       ]
    };
 
+
+   var textlengthData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            data : [{% for item in text_lengths %}
+                      {{item}},
+                    {% endfor %}]
+      }
+      ]
+   };
+
  
    
  
@@ -194,10 +211,10 @@
    });
 
    // Length Bar Chart
-   var pleasantness_chart = document.getElementById("length_chart").getContext("2d");
+   var textlength_chart = document.getElementById("length_chart").getContext("2d");
    // pleasantness_steps = 10;
    // pleasantness_max = 10;
-   new Chart(pleasantness_chart).Bar(pleasantnessData, {
+   new Chart(textlength_chart).Bar(textlengthData, {
         // scaleOverride: false,
         // scaleSteps: pleasantness_steps,
         // scaleStepWidth: Math.ceil(pleasantness_max / pleasantness_steps),

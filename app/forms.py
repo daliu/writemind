@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
+from wtforms.fields.html5 import DateField
+
 from app.models import User
 from flask_babel import lazy_gettext as _l
 
@@ -86,7 +88,49 @@ class CrisisStabilizationForm(FlaskForm):
     have_identified_appropriate_services = StringField(_l('PLACEHOLDER_TEXT?'), validators = [DataRequired()])
     guardians_believe_can_benefit = StringField(_l('PLACEHOLDER_TEXT?'), validators = [DataRequired()])
 
-# class DynamicForm(arguments):
-#     class HealthParametersForm(FlaskForm):
+class DietForm(FlaskForm):
+    Date = DateField('Which day is this for? Overrides previous entry, if one exists.')
+    num_meals = IntegerField(_l('Number of Meals'))
+    drank_water = BooleanField(_l('Drink at least two cups of water?'))
+    veggies = BooleanField(_l('Had Veggies?'))
+    fruits = BooleanField(_l('Had Fruit?'))
+    thirsty = BooleanField(_l('Felt Thirsty Today?'))
+    sugar = BooleanField(_l('Had Sugar?'))
+    junkfood = BooleanField(_l('Had Junkfood?'))
+    alcohol = BooleanField(_l('Had Alcohol?'))
+    caffeine = BooleanField(_l('Had Caffeine? (Coffee/Tea/Energy Drink/etc.)'))
+    supplement = BooleanField(_l('Consume a multivitamin or nutrition supplement?'))
+    diet_quality = IntegerField(_l('On a scale of 1-10 (10 is best), how healthy did you eat?'))
+
+class ExerciseForm(FlaskForm):
+    Date = DateField('Which day is this for? Overrides previous entry, if one exists.')
+    cardio = BooleanField(_l('Cardio?'))
+    strength_training = BooleanField(_l('Strength training?'))
+    walked = BooleanField(_l('Walked?'))
+    sweat = BooleanField(_l('Sweat during exercise?'))
+    feel_sore = BooleanField(_l('Feel sore from exercise?'))
+    exercise_quality = IntegerField(_l('On a scale of 1-10 (10 is most), how rigorous was your exercise overall?'))
+
+class SleepForm(FlaskForm):
+    Date = DateField('Which day is this for? Overrides previous entry, if one exists.')
+    hours = DecimalField(_l('Hours of sleep?'))
+    was_interrupted = BooleanField(_l('Sleep interrupted (woke up in middle)?'))
+    felt_tired_immediate = BooleanField(_l('Feel tired immediately after getting up?'))
+    slept_early = BooleanField(_l('Slept early?'))
+    slept_on_time = BooleanField(_l('Slept on time?'))
+    slept_late = BooleanField(_l('Slept late?'))
+    sleep_quality = IntegerField(_l('On a scale of 1-10 (10 is best), what do you feel was the quality of your sleep?'))
+
+class MoodForm(FlaskForm):
+    Date = DateField('Which day is this for? Overrides previous entry, if one exists.')
+    content = BooleanField(_l('Did you feel mostly content today?'))
+    relaxted = BooleanField(_l('Did you feel mostly relaxed?'))
+    excited = BooleanField(_l('Did you feel mostly excited?'))
+    confident = BooleanField(_l('Did you feel mostly confident?'))
+    productive = BooleanField(_l('Did you feel mostly productive?'))
+    laughed = BooleanField(_l('Did you laugh today?'))
+    mood_swings = BooleanField(_l('Did you have any mood swings today?'))
+    talked_to_people = BooleanField(_l('Talk to more than 2 people in person?'))
+    mood_quality = IntegerField(_l('On a scale of 1-10 (10 is best), how was your mood overall?'))
 
 

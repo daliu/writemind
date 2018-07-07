@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Payment') }}{% endblock %}
+
+{% block content_title %}{{ _('Payment') }}{% endblock %}
+
+{% block app_content %}
+  <style>
+    textarea {
+      height: 400px;
+      min-width: 100%;
+      min-height: 100%;
+      class: "form-control";
+      id: "content";
+      name: "content";
+    }
+    input {
+      min-width: 100%;
+      min-height: 100%;
+      class: "form-control";
+      id: "title";
+      name: "title";
+      type: "text";
+      value: "";
+    }
+
+    form article label {
+      display: block;
+      margin: 5px;
+    }
+
+    form .submit {
+      margin: 15px 0;
+    }
+  </style>
+
+
+  <form action="/charge" method="post">
+    <article>
+      <label>
+        <span>Amount is $5.00</span>
+      </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ key }}"
+            data-description="A Flask Charge"
+            data-amount="500"
+            data-locale="auto"></script>
+  </form>
+
+
+<!-- 
+  <form action="{% block form_action %}{{ url_for('create') }}{% endblock %}" class="form-horizontal" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.title.label }}
+      <div class="col-lg-12">
+        {{ form.title }}
+        {% for error in form.title.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group">
+        {{ form.content.label }}
+      <div class="col-lg-12">
+        {{ form.content }}
+        {% for error in form.content.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {{ form.is_draft.label }}
+      <div class="col-lg-1">
+            {{ form.is_draft }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-lg-1">
+        {{ form.submit(class = "btn btn-warning") }}
+        <a class="btn btn-default" href="{{ url_for('entries', username = current_user.username) }}">Cancel</a>
+      </div>
+    </div>
+
+  </form> -->
+
+{% endblock %}
+

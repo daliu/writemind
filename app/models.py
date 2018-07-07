@@ -33,8 +33,9 @@ class User(UserMixin, db.Model):
         return Post.query.filter_by(user_id = self.id).order_by(Post.timestamp.desc())
 
     def get_own_entries(self):
+        """ Returns a Query object. To get items, use .all() """
         # Also need to filter by published boolean variable
-        return Entry.query.filter_by(user_id = self.id).order_by(Entry.timestamp.desc())
+        return Entry.query.filter_by(user_id = self.id, is_published = True).order_by(Entry.timestamp.desc())
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

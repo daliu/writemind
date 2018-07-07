@@ -4,10 +4,9 @@ import senticnet
 
 # Text analysis
 from textblob import TextBlob
-from senticnet.senticnet import Senticnet
 
 # Sentic Analysis from my package :P 
-from sentic import SenticPhrase # 0.0.6
+from sentic import SenticPhrase # 0.0.8
 
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords, movie_reviews

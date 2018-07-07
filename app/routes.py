@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime
 
@@ -14,6 +15,7 @@ from app.email import send_password_reset_email
 from flask_babel import get_locale
 from guess_language import guess_language
 from sqlalchemy import and_
+import stripe
 
 SCALING_CONSTANT = 10
 
@@ -37,6 +39,13 @@ STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our',
              'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
              't', 'can', 'will', 'just', 'don', 'should', 'now']
 
+stripe_keys = {
+  'secret_key': os.environ['SECRET_KEY'],
+  'publishable_key': os.environ['PUBLISHABLE_KEY']
+}
+
+stripe.api_key = stripe_keys['secret_key']
+
 CURRENT_EMOTIONS = ""
 CURRENT_THOUGHTS = ""
 
@@ -47,8 +56,8 @@ def before_request():
         db.session.commit()
     g.locale = str(get_locale())
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
+@app.route('/index', methods = ['GET', 'POST'])
 @login_required
 def index():
     return render_template('index.html',
@@ -241,7 +250,7 @@ def create():
     return render_template('create.html', title = 'Create New Entry', form = form)
 
 
-@app.route('/edit_profile', methods=['GET', 'POST'])
+@app.route('/edit_profile', methods = ['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
@@ -291,7 +300,7 @@ def detail(username, slug):
 @app.route('/<username>/dashboard/')
 @login_required
 def dashboard(username):
-    posts = [post for post in current_user.get_own_entries()]
+    posts = [post for post in current_user.get_own_entries().all()]
     posts.reverse()
     labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
     text_lengths = [len(post.content.split()) for post in posts[-7:]]
@@ -310,4 +319,99 @@ def dashboard(username):
                             depression_factor = depression_factor)
 
 
+@app.route('/charge', methods = ['GET', 'POST'])
+@login_required
+def charge():
+    if request.method == 'POST':
+        # Amount in cents
+        amount = 500
 
+        customer = stripe.Customer.create(
+            email = 'customer@example.com',
+            source = request.form['stripeToken']
+        )
+
+        charge = stripe.Charge.create(
+            customer = customer.id,
+            amount = amount,
+            currency = 'usd',
+            description = 'Flask Charge'
+        )
+
+        dollars = amount / 100
+        cents = amount % 100
+        flash('Thanks! Your payment of {} has been processed.'.format("$" + str(dollars) + "." + str(cents)))
+        return render_template('charge.html', amount = amount, key = stripe_keys['publishable_key'])
+
+    else:
+        return render_template('charge.html', key = stripe_keys['publishable_key'])
+
+@app.route('/daily_logs', methods = ['GET', 'POST'])
+@login_required
+def daily_logs():
+    if not current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = EntryForm()
+    if form.validate_on_submit():
+        
+        # Sentic Package
+        phrase_sentics = get_text_metrics(form.content.data)
+
+        sentiment = phrase_sentics["sentiment"]
+        polarity = phrase_sentics["polarity"]
+
+        if not phrase_sentics["moodtags"] and not phrase_sentics["semantics"]:
+            mood_tags = ""
+            semantics = ""
+        else:
+            mood_tags = ' '.join(phrase_sentics["moodtags"])
+            semantics = ' '.join(phrase_sentics["semantics"])
+
+        if phrase_sentics["sentics"]:
+            attention = phrase_sentics["sentics"]["attention"]
+            sensitivity = phrase_sentics["sentics"]["sensitivity"]
+            pleasantness = phrase_sentics["sentics"]["pleasantness"]
+            aptitude = phrase_sentics["sentics"]["aptitude"]
+        else:
+            attention = 0.0
+            sensitivity = 0.0
+            pleasantness = 0.0
+            aptitude = 0.0
+
+
+        depression_factor = get_depression_factor(form.content.data)
+
+        language = guess_language(form.content.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+
+        # Build the Entry
+        entry = Entry(title = form.title.data,
+                      content = form.content.data,
+                      slug = re.sub('[^\w]+', '-', form.title.data.lower()),
+                      is_published = (not form.is_draft.data),
+                      timestamp = datetime.utcnow(),
+                      author = current_user,
+                      language = language,
+
+                      # Metric Info below
+                      word_semantics = semantics,
+                      mood_tags = mood_tags,
+                      sentiment = sentiment,
+                      polarity = polarity,
+                      attention = attention,
+                      sensitivity = sensitivity,
+                      pleasantness = pleasantness,
+                      aptitude = aptitude,
+
+                      depression_factor = depression_factor)
+
+        db.session.add(entry)
+        db.session.commit()
+
+        # Redirect
+        flash('New Entry Composed!')
+        return redirect(url_for('entries', username = current_user.username))
+
+    return render_template('daily_logs.html', title = 'Daily Logs', form = form)
