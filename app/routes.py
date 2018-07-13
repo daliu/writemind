@@ -19,25 +19,20 @@ from sqlalchemy import and_
 
 SCALING_CONSTANT = 10
 
-STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our',
-             'ours', 'ourselves', 'you', 'your', 'yours',
-             'yourself', 'yourselves', 'he', 'him', 'his',
-             'himself', 'she', 'her', 'hers', 'herself',
-             'it', 'its', 'itself', 'they', 'them', 'their',
-             'theirs', 'themselves', 'what', 'which', 'who',
-             'whom', 'this', 'that', 'these', 'those', 'am',
-             'is', 'are', 'was', 'were', 'be', 'been', 'being',
-             'have', 'has', 'had', 'having', 'do', 'does', 'did',
-             'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or',
-             'because', 'as', 'until', 'while', 'of', 'at', 'by',
-             'for', 'with', 'about', 'against', 'between', 'into',
-             'through', 'during', 'before', 'after', 'above', 'below',
-             'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over',
-             'under', 'again', 'further', 'then', 'once', 'here', 'there',
-             'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each',
-             'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor',
-             'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's',
-             't', 'can', 'will', 'just', 'don', 'should', 'now']
+STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
+             'ourselves', 'you', 'your', 'yours', 'yourself',
+             'yourselves', 'he', 'him', 'his', 'himself', 'she',
+             'her', 'hers', 'herself', 'it', 'its', 'itself', 'they',
+             'them', 'their', 'theirs', 'themselves', 'what', 'which',
+             'who', 'whom', 'that', 'those', 'am', 'is', 'are', 'was',
+             'were', 'be', 'been', 'has', 'had', 'having', 'does', 'did',
+             'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because',
+             'as', 'until', 'while', 'of', 'at', 'by', 'with', 'about',
+             'between', 'into', 'through', 'during', 'before', 'after',
+             'below', 'to', 'from', 'up', 'in', 'on', 'under', 'then',
+             'here', 'there', 'when', 'where', 'why', 'how', 'any', 'both',
+             'more', 'most', 'other', 'some', 'no', 'nor', 'not', 'so',
+             'than', 'too', 's', 't', 'can', 'will', 'should', 'now']
 
 # stripe_keys = {
 #   'secret_key': os.environ['SECRET_KEY'],
@@ -306,11 +301,13 @@ def dashboard(username):
     posts.reverse()
     labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
     text_lengths = [len(post.content.split()) for post in posts[-7:]]
-    polarity = [float(post.polarity) if post.polarity else 0 for post in posts[-7:]]
-    attention = [float(post.attention) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
-    sensitivity = [float(post.sensitivity) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
-    pleasantness = [float(post.pleasantness) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
-    depression_factor = [float(post.depression_factor) for post in posts[-7:]]
+    polarity = [post.polarity if post.polarity else 0 for post in posts[-7:]]
+    attention = [post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
+    sensitivity = [post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
+    pleasantness = [post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
+    depression_factor = [post.depression_factor for post in posts[-7:]]
+    mood_tags = [post.mood_tags for post in posts[-7:]]
+    word_semantics = [post.word_semantics for post in posts[-7:]]
     return render_template('dashboard.html',
                             labels = labels,
                             text_lengths = text_lengths,
@@ -318,7 +315,9 @@ def dashboard(username):
                             attention = attention,
                             sensitivity = sensitivity,
                             pleasantness = pleasantness,
-                            depression_factor = depression_factor)
+                            depression_factor = depression_factor,
+                            mood_tags = mood_tags,
+                            word_semantics = word_semantics)
 
 
 # @app.route('/charge', methods = ['GET', 'POST'])

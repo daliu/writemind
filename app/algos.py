@@ -9,7 +9,7 @@ from textblob import TextBlob
 from sentic import SenticPhrase # 0.0.8
 
 from nltk.classify import NaiveBayesClassifier
-from nltk.corpus import stopwords, movie_reviews
+# from nltk.corpus import stopwords, movie_reviews
 
 from textblob import TextBlob
 from fuzzywuzzy import fuzz
@@ -17,6 +17,8 @@ from fuzzywuzzy import fuzz
 import nltk
 from collections import defaultdict
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
+
+# import pdb
 
 
 DEPRESSION_WORDS = ["abandoned", "achy", "afraid", "agitated", "agony", "alone", "anguish", "antisocial", "anxious",
@@ -38,7 +40,22 @@ ALL_OR_NOTHING_LIST = ["anything", "everything", "nothing", "always", "never", "
 JUMPING_TO_CONCLUSIONS_LIST = ["must be", "definitely", " will think", "'ll think", "obvious","definite"]
 SHOULD_OR_MUST_LIST = ["should", "should've", "shouldn't"]
 
-STOPWORDS = set(stopwords.words("english"))
+# STOPWORDS = set(stopwords.words("english"))
+
+STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
+             'ourselves', 'you', 'your', 'yours', 'yourself',
+             'yourselves', 'he', 'him', 'his', 'himself', 'she',
+             'her', 'hers', 'herself', 'it', 'its', 'itself', 'they',
+             'them', 'their', 'theirs', 'themselves', 'what', 'which',
+             'who', 'whom', 'that', 'those', 'am', 'is', 'are', 'was',
+             'were', 'be', 'been', 'has', 'had', 'having', 'does', 'did',
+             'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because',
+             'as', 'until', 'while', 'of', 'at', 'by', 'with', 'about',
+             'between', 'into', 'through', 'during', 'before', 'after',
+             'below', 'to', 'from', 'up', 'in', 'on', 'under', 'then',
+             'here', 'there', 'when', 'where', 'why', 'how', 'any', 'both',
+             'more', 'most', 'other', 'some', 'no', 'nor', 'not', 'so',
+             'than', 'too', 's', 't', 'can', 'will', 'should', 'now']
 
 READ_UNICODE = "rU"
 
@@ -100,18 +117,19 @@ Think about what you might tell a family member or friend if they were in the sa
 
 def get_text_metrics(text):
     '''
-    Uses Polarity and Sentiment calculations based on Senticnet4
+    Uses Polarity and Sentiment calculations based on Sentic package
     Don't need semantics, because we're already dissected the object for its variables. 
     Keeping dictionary for concepts in case we want to just return that in the future or something.
     '''
-    sp = SenticPhrase("")
-    return sp.info(text)
+    sp = SenticPhrase(text)
+    # return sp.info()
 
-    # return {"total_concept_words": len(sp.get_sentics()),
-    #         "polarity_sum": sp.get_polarity(),
-    #         "moodtags": sp.get_moodtags(),
-    #         "semantics": sp.get_semantics(),
-    #         "other_measurements": sp.get_sentics()}
+    return {"total_concept_words": len(sp.get_sentics()),
+            "polarity_sum": sp.get_polarity(),
+            "moodtags": sp.get_moodtags(),
+            "semantics": sp.get_semantics(),
+            "sentics": {'attention': .03, 'sensitivity': .03, 'pleasantness': .03, 'aptitude': .03},
+            "other_measurements": sp.get_sentics()}
 
     # total_concept_words = 0
     # polarity_sum = 0
@@ -198,9 +216,8 @@ def get_keywords(text):
     threshold = sum(scores)/len(scores)
     print("Threshold:" + str(threshold))
 
-    pdb.set_trace()
-
     # pdb.set_trace()
+
     return lda_model
 
 
