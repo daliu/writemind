@@ -306,11 +306,11 @@ def dashboard(username):
     posts.reverse()
     labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
     text_lengths = [len(post.content.split()) for post in posts[-7:]]
-    polarity = [post.polarity if post.polarity else 0 for post in posts[-7:]]
-    attention = [post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
-    sensitivity = [post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
-    pleasantness = [post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
-    depression_factor = [post.depression_factor for post in posts[-7:]]
+    polarity = [float(post.polarity) if post.polarity else 0 for post in posts[-7:]]
+    attention = [float(post.attention) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
+    sensitivity = [float(post.sensitivity) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
+    pleasantness = [float(post.pleasantness) / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
+    depression_factor = [float(post.depression_factor) for post in posts[-7:]]
     return render_template('dashboard.html',
                             labels = labels,
                             text_lengths = text_lengths,
@@ -361,7 +361,7 @@ def daily_logs():
         phrase_sentics = get_text_metrics(form.content.data)
 
         sentiment = phrase_sentics["sentiment"]
-        polarity = phrase_sentics["polarity"]
+        polarity = float(phrase_sentics["polarity"])
 
         if not phrase_sentics["moodtags"] and not phrase_sentics["semantics"]:
             mood_tags = ""
@@ -370,11 +370,11 @@ def daily_logs():
             mood_tags = ' '.join(phrase_sentics["moodtags"])
             semantics = ' '.join(phrase_sentics["semantics"])
 
-        if phrase_sentics["sentics"]:
-            attention = phrase_sentics["sentics"]["attention"]
-            sensitivity = phrase_sentics["sentics"]["sensitivity"]
-            pleasantness = phrase_sentics["sentics"]["pleasantness"]
-            aptitude = phrase_sentics["sentics"]["aptitude"]
+        if "sentics" in phrase_sentics:
+            attention = float(phrase_sentics["sentics"]["attention"])
+            sensitivity = float(phrase_sentics["sentics"]["sensitivity"])
+            pleasantness = float(phrase_sentics["sentics"]["pleasantness"])
+            aptitude = float(phrase_sentics["sentics"]["aptitude"])
         else:
             attention = 0.0
             sensitivity = 0.0
