@@ -4,7 +4,8 @@ from datetime import datetime
 
 from flask import render_template, flash, redirect, request, url_for, g
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EntryForm, ResetPasswordRequestForm, ResetPasswordForm, PreliminaryForm
+# from app.forms import LoginForm, RegistrationForm, EditProfileForm, EntryForm, ResetPasswordRequestForm, ResetPasswordForm, PreliminaryForm
+from app.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Post, Entry
 from werkzeug.urls import url_parse
@@ -15,34 +16,25 @@ from app.email import send_password_reset_email
 from flask_babel import get_locale
 from guess_language import guess_language
 from sqlalchemy import and_
-# import stripe
 
-SCALING_CONSTANT = 10
 
-STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
-             'ourselves', 'you', 'your', 'yours', 'yourself',
-             'yourselves', 'he', 'him', 'his', 'himself', 'she',
-             'her', 'hers', 'herself', 'it', 'its', 'itself', 'they',
-             'them', 'their', 'theirs', 'themselves', 'what', 'which',
-             'who', 'whom', 'that', 'those', 'am', 'is', 'are', 'was',
-             'were', 'be', 'been', 'has', 'had', 'having', 'does', 'did',
-             'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because',
-             'as', 'until', 'while', 'of', 'at', 'by', 'with', 'about',
-             'between', 'into', 'through', 'during', 'before', 'after',
-             'below', 'to', 'from', 'up', 'in', 'on', 'under', 'then',
-             'here', 'there', 'when', 'where', 'why', 'how', 'any', 'both',
-             'more', 'most', 'other', 'some', 'no', 'nor', 'not', 'so',
-             'than', 'too', 's', 't', 'can', 'will', 'should', 'now']
 
-# stripe_keys = {
-#   'secret_key': os.environ['SECRET_KEY'],
-#   'publishable_key': os.environ['PUBLISHABLE_KEY']
-# }
+# This is in Algos.py
+# STOPWORDS = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours',
+#              'ourselves', 'you', 'your', 'yours', 'yourself',
+#              'yourselves', 'he', 'him', 'his', 'himself', 'she',
+#              'her', 'hers', 'herself', 'it', 'its', 'itself', 'they',
+#              'them', 'their', 'theirs', 'themselves', 'what', 'which',
+#              'who', 'whom', 'that', 'those', 'am', 'is', 'are', 'was',
+#              'were', 'be', 'been', 'has', 'had', 'having', 'does', 'did',
+#              'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because',
+#              'as', 'until', 'while', 'of', 'at', 'by', 'with', 'about',
+#              'between', 'into', 'through', 'during', 'before', 'after',
+#              'below', 'to', 'from', 'up', 'in', 'on', 'under', 'then',
+#              'here', 'there', 'when', 'where', 'why', 'how', 'any', 'both',
+#              'more', 'most', 'other', 'some', 'no', 'nor', 'not', 'so',
+#              'than', 'too', 's', 't', 'can', 'will', 'should', 'now']
 
-# stripe.api_key = stripe_keys['secret_key']
-
-CURRENT_EMOTIONS = ""
-CURRENT_THOUGHTS = ""
 
 @app.before_request
 def before_request():
@@ -181,21 +173,17 @@ def create():
     form = EntryForm()
     if form.validate_on_submit():
         
-        # Sentic Package
-        phrase_sentics = get_text_metrics(form.content.data)
+        main_text_content = form.content.data
 
-        
-        
+        # Sentic Package
+        phrase_sentics = get_text_metrics(main_text_content)
+
         sentiment = phrase_sentics["sentiment"]
         polarity = phrase_sentics["polarity"]
 
-        if not phrase_sentics["moodtags"] and not phrase_sentics["semantics"]:
-            mood_tags = ""
-            semantics = ""
-        else:
-            mood_tags = ' '.join(phrase_sentics["moodtags"])
-            semantics = ' '.join(phrase_sentics["semantics"])
-
+        mood_tags = ' '.join(phrase_sentics["moodtags"])
+        semantics = ' '.join(phrase_sentics["semantics"])
+        
         if phrase_sentics["sentics"]:
             attention = phrase_sentics["sentics"]["attention"]
             sensitivity = phrase_sentics["sentics"]["sensitivity"]
@@ -207,10 +195,9 @@ def create():
             pleasantness = 0.0
             aptitude = 0.0
 
+        depression_factor = get_depression_factor(main_text_content)
 
-        depression_factor = get_depression_factor(form.content.data)
-
-        language = guess_language(form.content.data)
+        language = guess_language(main_text_content)
         if language == 'UNKNOWN' or len(language) > 5:
             language = ''
 
@@ -218,7 +205,7 @@ def create():
         slug = re.sub('[^\w]+', '-', form.title.data.lower())
         # if current_user.get_own_entries()
         entry = Entry(title = form.title.data,
-                      content = form.content.data,
+                      content = main_text_content,
                       slug = slug,
                       is_published = (not form.is_draft.data),
                       timestamp = datetime.utcnow(),

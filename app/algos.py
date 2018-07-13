@@ -20,6 +20,19 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 
 # import pdb
 
+# import stripe
+
+# stripe_keys = {
+#   'secret_key': os.environ['SECRET_KEY'],
+#   'publishable_key': os.environ['PUBLISHABLE_KEY']
+# }
+
+# stripe.api_key = stripe_keys['secret_key']
+
+CURRENT_EMOTIONS = ""
+CURRENT_THOUGHTS = ""
+
+# SCALING_CONSTANT = 10
 
 DEPRESSION_WORDS = ["abandoned", "achy", "afraid", "agitated", "agony", "alone", "anguish", "antisocial", "anxious",
  "breakdown", "brittle", "broken", "catatonic", "consumed", "crisis", "crushed", "crying",
@@ -122,14 +135,15 @@ def get_text_metrics(text):
     Keeping dictionary for concepts in case we want to just return that in the future or something.
     '''
     sp = SenticPhrase(text)
-    # return sp.info()
+    return sp.info()
 
-    return {"total_concept_words": len(sp.get_sentics()),
-            "polarity_sum": sp.get_polarity(),
-            "moodtags": sp.get_moodtags(),
-            "semantics": sp.get_semantics(),
-            "sentics": {'attention': .03, 'sensitivity': .03, 'pleasantness': .03, 'aptitude': .03},
-            "other_measurements": sp.get_sentics()}
+    # return {"total_concept_words": len(sp.get_sentics()),
+    #         "polarity_sum": sp.get_polarity(),
+    #         "moodtags": sp.get_moodtags(),
+    #         "semantics": sp.get_semantics(),
+    #         "sentics": {'attention': .03, 'sensitivity': .03, 'pleasantness': .03, 'aptitude': .03},
+    #         "other_measurements": sp.get_sentics(),
+    #         "sentiment": .1}
 
     # total_concept_words = 0
     # polarity_sum = 0
