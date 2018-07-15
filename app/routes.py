@@ -174,9 +174,11 @@ def create():
     if form.validate_on_submit():
         
         main_text_content = form.content.data
+        print("Main_text_content", main_text_content)
 
         # Sentic Package
         phrase_sentics = get_text_metrics(main_text_content)
+        print("phrase_sentics", phrase_sentics)
 
         sentiment = phrase_sentics["sentiment"]
         polarity = phrase_sentics["polarity"]
@@ -194,6 +196,10 @@ def create():
             sensitivity = 0.0
             pleasantness = 0.0
             aptitude = 0.0
+
+
+        print("\n Values: \n")
+        print(attention, sensitivity, pleasantness, aptitude)
 
         depression_factor = get_depression_factor(main_text_content)
 
