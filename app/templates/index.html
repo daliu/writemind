@@ -29,21 +29,21 @@ div.jumbotron.notebook{
 
             {% if current_user == user.username %}
                 <div class="container">
-                {% for post in posts %}
-                    {% if post.is_published %}
-                        <div><p> {{ _('%(username)s says:', username=post.author.username) }}
-                            <b>{{ _('%(body)s', body = post.body) }}</b>
+                {% for entry in entries %}
+                    {% if entry.is_published %}
+                        <div><p> {{ _('%(username)s says:', username = entry.author.username) }}
+                            <b>{{ _('%(body)s', body = entry.body) }}</b>
                         </p></div>
                     {% endif %}
                 {% endfor %}
 
                 {% if prev_url %}
-                    <a href="{{ prev_url }}">{{ _('Newer posts') }}</a>
+                    <a href="{{ prev_url }}">{{ _('Newer entries') }}</a>
                 {% endif %}
 
 
                 {% if next_url %}
-                    <a href="{{ next_url }}">{{ _('Older posts') }}</a>
+                    <a href="{{ next_url }}">{{ _('Older entries') }}</a>
                 {% endif %}
                 </div>
             {% endif %}

@@ -15,6 +15,12 @@ from flask_babel import Babel
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# app.config['SQLALCHEMY_DATABASE_URI']
+
+# Use this to disaple cache loading
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField, DecimalField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
+from wtforms_components import TimeField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms.fields.html5 import DateField
 
 from app.models import User
@@ -134,3 +135,66 @@ class MoodForm(FlaskForm):
     mood_quality = IntegerField(_l('On a scale of 1-10 (10 is best), how was your mood overall?'))
 
 
+class QuestionaireForm(FlaskForm):
+    is_student = BooleanField(_l('Are you a student?'), validators = [])
+    has_occupation = BooleanField(_l('Do you have an occupation?'), validators = [])
+    does_volunteer = BooleanField(_l('Do you do volunteering?'), validators = [])
+
+    # Int Field
+    weekly_work_hours = IntegerField(_l('How many hours a week do you work/study?'), validators = [])
+
+    # Int Field
+    hours_slept = IntegerField(_l('About how many hours did you sleep last night?'), validators = [])
+
+    sleep_time = TimeField(_l('Sleep Time'), validators = [])
+    wake_time = TimeField(_l('Wake Time'), validators = [])
+    sleep_quality = BooleanField(_l('What do you feel the quality of your sleep?'), validators = [])
+    num_meals = IntegerField(_l('How many times today did you have a meal?'), validators = [])
+    num_snacks = IntegerField(_l('How many times today did you eat a snack?'), validators = [])
+    diet_health_rating = BooleanField(_l('How healthy do you think your food choices are?'), validators = [])
+    # = BooleanField(_l('Which of these did you have today?'), validators = [])
+
+    has_hobby = BooleanField(_l('Do you play a sport or have a regular hobby?'), validators = [])
+    has_exercised = BooleanField(_l('Did you exercise today?'), validators = [])
+    type_of_exercise = StringField(_l('If yes, what kind of exercise?'), validators = [])
+    exercise_quality = IntegerField(_l('Exercise quality'), validators = [])
+
+    # Int Field
+    min_exercised = IntegerField(_l('How many minutes did you spend exercising?'), validators = [])
+
+    has_laughed = BooleanField(_l('Did you laugh today?'), validators = [])
+    had_mood_swing = BooleanField(_l('Did you have a mood swing today?'), validators = [])
+
+    # Int Field
+    mood_rating = IntegerField(_l('On a scale of 1-10, how was your mood overall?'), validators = [NumberRange(1, 10, "Must choose number between 1-10")])
+
+    # Int Field
+    num_friends_seen = IntegerField(_l('About how many of your friends did you see in-person over the past day?'), validators = [])
+
+    is_close_to_family = BooleanField(_l('Are you close to your family?'), validators = [])
+    isin_relationship = BooleanField(_l('In a relationship?'), validators = [])
+    wasin_relationship = BooleanField(_l('Recently been in a relationship?'), validators = [])
+    depressed_today = BooleanField(_l('Did you feel depressed today?'), validators = [])
+    anxious_today = BooleanField(_l('Did you feel anxious today?'), validators = [])
+    stressed_today = BooleanField(_l('Did you feel stressed today?'), validators = [])
+
+    # = BooleanField(_l('Please check the box if you experienced it today'), validators = [DataRequired()])
+    # = BooleanField(_l('Which of these did you feel today, before taking this survey?'), validators = [DataRequired()])
+    # = BooleanField(_l('Which of these did you feel today, before taking this survey?'), validators = [DataRequired()])
+    # = BooleanField(_l('In the past day, have you...'), validators = [DataRequired()])
+
+    submit = SubmitField(_l('Submit Questionaire'))
+
+# class Occupation(FlaskForm):
+#     Date = DateField('Which day is this for? Overrides previous entry, if one exists.')
+    # Student_worker
+    # Years_of_work
+
+# External Factors
+# Relationships
+# Hobbies
+
+# class Depression(FlaskForm):
+    # Healthy
+    # Ex-Depressed
+    # Depressed

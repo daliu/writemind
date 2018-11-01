@@ -125,3 +125,4 @@ wtf
 WTForms
 gunicorn
 stripe
+wtforms_components

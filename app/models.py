@@ -22,7 +22,6 @@ class User(UserMixin, db.Model):
     # emotions = db.Column(db.String(140), default="")
     # thoughts = db.Column(db.String, default="")
 
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -58,6 +57,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+"""
+Not to be confused with Entry class. This is deprecated.
+"""
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -109,3 +111,47 @@ class Entry(db.Model):
 
     def __repr__(self):
         return '<Entry {}>'.format(self.content)
+
+class SurveyResponse(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, default = datetime.utcnow)
+
+    # Occupation / Hours worked
+    is_student = db.Column(db.Boolean)
+    has_occupation = db.Column(db.Boolean)
+    weekly_work_hours = db.Column(db.Integer)
+
+    # Sleep & Exercise
+    hours_slept = db.Column(db.Integer)
+    sleep_time = db.Column(db.DateTime, default = datetime.utcnow)
+    wake_time = db.Column(db.DateTime, default = datetime.utcnow)
+    sleep_quality = db.Column(db.Boolean)
+    num_meals = db.Column(db.Boolean)
+    num_snacks = db.Column(db.Boolean)
+    diet_health_rating = db.Column(db.Boolean)
+
+    # Exercise / Hobbies
+    has_hobby = db.Column(db.Boolean)
+    does_volunteer = db.Column(db.Boolean)
+    has_exercised = db.Column(db.Boolean)
+    type_of_exercise = db.Column(db.String)
+    exercise_quality = db.Column(db.Integer)
+    min_exercised = db.Column(db.Integer)
+
+    # Mood
+    has_laughed = db.Column(db.Boolean)
+    had_mood_swing = db.Column(db.Boolean)
+    mood_rating = db.Column(db.Integer)
+
+    # Relationships
+    num_friends_seen = db.Column(db.Integer)
+    is_close_to_family = db.Column(db.Boolean)
+    isin_relationship = db.Column(db.Boolean)
+    wasin_relationship = db.Column(db.Boolean)
+    depressed_today = db.Column(db.Boolean)
+    anxious_today = db.Column(db.Boolean)
+    stressed_today = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<SurveyResponse {}>'.format(self.content)

@@ -4,19 +4,18 @@ from datetime import datetime
 
 from flask import render_template, flash, redirect, request, url_for, g
 from app import app, db
-# from app.forms import LoginForm, RegistrationForm, EditProfileForm, EntryForm, ResetPasswordRequestForm, ResetPasswordForm, PreliminaryForm
 from app.forms import *
-from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Post, Entry
-from werkzeug.urls import url_parse
-# from app.algos import get_polarity_and_subjectivity, get_text_metrics, get_depression_factor, all_or_nothing_thinking, jumping_to_conclusions, should_or_must_thinking, labeling
 from app.algos import *
-from app.forms import ResetPasswordRequestForm
+
+# from app.forms import LoginForm, RegistrationForm, EditProfileForm, EntryForm, ResetPasswordRequestForm, ResetPasswordForm, PreliminaryForm
+# from app.algos import get_polarity_and_subjectivity, get_text_metrics, get_depression_factor, all_or_nothing_thinking, jumping_to_conclusions, should_or_must_thinking, labeling
+from flask_login import current_user, login_user, logout_user, login_required
+from app.models import User, Post, Entry, SurveyResponse
+from werkzeug.urls import url_parse
 from app.email import send_password_reset_email
 from flask_babel import get_locale
 from guess_language import guess_language
 from sqlalchemy import and_
-
 
 
 # This is in Algos.py
@@ -44,24 +43,24 @@ def before_request():
     g.locale = str(get_locale())
 
 @app.route('/', methods = ['GET', 'POST'])
-@app.route('/index', methods = ['GET', 'POST'])
+@app.route('/index/', methods = ['GET', 'POST'])
 @login_required
 def index():
     return render_template('index.html',
                             title = 'Home',
                             user = current_user)
     # page = request.args.get('page', 1, type = int)
-    # posts = current_user.get_own_entries().paginate(page, app.config['POSTS_PER_PAGE'], False)
-    # next_url = url_for('user', username = username, page = posts.next_num) if posts.has_next else None
-    # prev_url = url_for('user', username = username, page = posts.prev_num) if posts.has_prev else None
+    # entries = current_user.get_own_entries().paginate(page, app.config['ENTRIES_PER_PAGE'], False)
+    # next_url = url_for('user', username = username, page = entries.next_num) if entries.has_next else None
+    # prev_url = url_for('user', username = username, page = entries.prev_num) if entries.has_prev else None
     # return render_template('user.html',
     #                         user = user,
-    #                         posts = posts.items,
+    #                         entries = entries.items,
     #                         next_url = next_url,
     #                         prev_url = prev_url)
 
 
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login/', methods = ['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -87,7 +86,7 @@ def login():
     return render_template('login.html', title = 'Sign In', form = form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -114,7 +113,7 @@ def register():
     return render_template('register.html', title = 'Register', form = form)
 
 
-@app.route('/reset_password_request', methods = ['GET', 'POST'])
+@app.route('/reset_password_request/', methods = ['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -163,8 +162,7 @@ def user(username):
                             user = current_user,
                             form = form)
 
-
-@app.route('/create', methods = ['GET', 'POST'])
+@app.route('/create/', methods = ['GET', 'POST'])
 @login_required
 def create():
     if not current_user.is_authenticated:
@@ -174,11 +172,11 @@ def create():
     if form.validate_on_submit():
         
         main_text_content = form.content.data
-        print("Main_text_content", main_text_content)
+        # print("Main_text_content", main_text_content)
 
         # Sentic Package
         phrase_sentics = get_text_metrics(main_text_content)
-        print("phrase_sentics", phrase_sentics)
+        # print("phrase_sentics", phrase_sentics)
 
         sentiment = phrase_sentics["sentiment"]
         polarity = phrase_sentics["polarity"]
@@ -227,7 +225,6 @@ def create():
                       sensitivity = sensitivity,
                       pleasantness = pleasantness,
                       aptitude = aptitude,
-
                       depression_factor = depression_factor)
 
         db.session.add(entry)
@@ -240,7 +237,7 @@ def create():
     return render_template('create.html', title = 'Create New Entry', form = form)
 
 
-@app.route('/edit_profile', methods = ['GET', 'POST'])
+@app.route('/edit_profile/', methods = ['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
@@ -262,12 +259,12 @@ def edit_profile():
 @login_required
 def entries(username):
     page = request.args.get('page', 1, type = int)
-    posts = current_user.get_own_entries().paginate(page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('entries', username = username, page = posts.next_num) if posts.has_next else None
-    prev_url = url_for('entries', username = username, page = posts.prev_num) if posts.has_prev else None
+    entries = current_user.get_own_entries().paginate(page, app.config['ENTRIES_PER_PAGE'], False)
+    next_url = url_for('entries', username = username, page = entries.next_num) if entries.has_next else None
+    prev_url = url_for('entries', username = username, page = entries.prev_num) if entries.has_prev else None
     return render_template('entries.html',
                             user = current_user,
-                            posts = posts.items,
+                            entries = entries.items,
                             next_url = next_url,
                             prev_url = prev_url)
 
@@ -275,13 +272,13 @@ def entries(username):
 @app.route('/<username>/<slug>/')
 @login_required
 def detail(username, slug):
-    post = Entry.query.filter_by(slug = slug, author = current_user).first_or_404()
-    all_or_none = all_or_nothing_thinking(post.content)
-    jump_conclusions = jumping_to_conclusions(post.content)
-    should_or_must = should_or_must_thinking(post.content)
-    label = labeling(post.content)
+    entry = Entry.query.filter_by(slug = slug, author = current_user).first_or_404()
+    all_or_none = all_or_nothing_thinking(entry.content)
+    jump_conclusions = jumping_to_conclusions(entry.content)
+    should_or_must = should_or_must_thinking(entry.content)
+    label = labeling(entry.content)
     return render_template('detail.html', username = current_user.username,
-                            post = post, slug = slug,
+                            entry = entry, slug = slug,
                             all_or_none = all_or_none,
                             jump_conclusions = jump_conclusions,
                             should_or_must = should_or_must,
@@ -290,17 +287,17 @@ def detail(username, slug):
 @app.route('/<username>/dashboard/')
 @login_required
 def dashboard(username):
-    posts = [post for post in current_user.get_own_entries().all()]
-    posts.reverse()
-    labels = [' '.join(post.content.split()[:5]) + "..." for post in posts[-7:]]
-    text_lengths = [len(post.content.split()) for post in posts[-7:]]
-    polarity = [post.polarity if post.polarity else 0 for post in posts[-7:]]
-    attention = [post.attention / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.attention else 0 for post in posts[-7:]]
-    sensitivity = [post.sensitivity / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.sensitivity else 0 for post in posts[-7:]]
-    pleasantness = [post.pleasantness / (len([1 for word in post.content if word.lower() not in STOPWORDS]) + 1) if post.pleasantness else 0 for post in posts[-7:]]
-    depression_factor = [post.depression_factor for post in posts[-7:]]
-    mood_tags = [post.mood_tags for post in posts[-7:]]
-    word_semantics = [post.word_semantics for post in posts[-7:]]
+    entries = [entry for entry in current_user.get_own_entries().all()]
+    entries.reverse()
+    labels = [' '.join(entry.content.split()[:5]) + "..." for entry in entries[-7:]]
+    text_lengths = [len(entry.content.split()) for entry in entries[-7:]]
+    polarity = [entry.polarity if entry.polarity else 0 for entry in entries[-7:]]
+    attention = [entry.attention / (len([1 for word in entry.content if word.lower() not in STOPWORDS]) + 1) if entry.attention else 0 for entry in entries[-7:]]
+    sensitivity = [entry.sensitivity / (len([1 for word in entry.content if word.lower() not in STOPWORDS]) + 1) if entry.sensitivity else 0 for entry in entries[-7:]]
+    pleasantness = [entry.pleasantness / (len([1 for word in entry.content if word.lower() not in STOPWORDS]) + 1) if entry.pleasantness else 0 for entry in entries[-7:]]
+    depression_factor = [entry.depression_factor for entry in entries[-7:]]
+    mood_tags = [entry.mood_tags for entry in entries[-7:]]
+    word_semantics = [entry.word_semantics for entry in entries[-7:]]
     return render_template('dashboard.html',
                             labels = labels,
                             text_lengths = text_lengths,
@@ -340,72 +337,67 @@ def dashboard(username):
 #     else:
 #         return render_template('charge.html', key = stripe_keys['publishable_key'])
 
-@app.route('/daily_logs', methods = ['GET', 'POST'])
+@app.route('/questionaire/', methods = ['GET', 'POST'])
 @login_required
-def daily_logs():
+def questionaire():
     if not current_user.is_authenticated:
         return redirect(url_for('index'))
 
-    form = EntryForm()
-    if form.validate_on_submit():
+    form = QuestionaireForm()
+    if form.validate_on_submit():    
         
-        # Sentic Package
-        phrase_sentics = get_text_metrics(form.content.data)
+        # language = guess_language(form.content.data)
+        # if language == 'UNKNOWN' or len(language) > 5:
+        #     language = ''
 
-        sentiment = phrase_sentics["sentiment"]
-        polarity = float(phrase_sentics["polarity"])
+        # Build the Response
+        if form.validate_on_submit():
+            response =  SurveyResponse(user_id = current_user.id,
+                            timestamp = datetime.utcnow(),
 
-        if not phrase_sentics["moodtags"] and not phrase_sentics["semantics"]:
-            mood_tags = ""
-            semantics = ""
-        else:
-            mood_tags = ' '.join(phrase_sentics["moodtags"])
-            semantics = ' '.join(phrase_sentics["semantics"])
+                            # Occupation / Hours worked
+                            is_student = form.is_student.data,
+                            has_occupation = form.has_occupation.data,
+                            weekly_work_hours = form.weekly_work_hours.data,
 
-        if "sentics" in phrase_sentics:
-            attention = float(phrase_sentics["sentics"]["attention"])
-            sensitivity = float(phrase_sentics["sentics"]["sensitivity"])
-            pleasantness = float(phrase_sentics["sentics"]["pleasantness"])
-            aptitude = float(phrase_sentics["sentics"]["aptitude"])
-        else:
-            attention = 0.0
-            sensitivity = 0.0
-            pleasantness = 0.0
-            aptitude = 0.0
+                            # Sleep & Exercise
+                            hours_slept = form.hours_slept.data,
+                            sleep_time = form.sleep_time.data,
+                            wake_time = form.wake_time.data,
+                            sleep_quality = form.sleep_quality.data,
+                            num_meals = form.num_meals.data,
+                            num_snacks = form.num_snacks.data,
+                            diet_health_rating = form.diet_health_rating.data,
 
+                            # Exercise / Hobbies
+                            has_hobby = form.has_hobby.data,
+                            does_volunteer = form.does_volunteer.data,
+                            has_exercised = form.has_exercised.data,
+                            type_of_exercise = form.type_of_exercise.data,
+                            exercise_quality = form.exercise_quality.data,
+                            min_exercised = form.min_exercised.data,
 
-        depression_factor = get_depression_factor(form.content.data)
+                            # Mood
+                            has_laughed = form.has_laughed.data,
+                            had_mood_swing = form.had_mood_swing.data,
+                            mood_rating = form.mood_rating.data,
 
-        language = guess_language(form.content.data)
-        if language == 'UNKNOWN' or len(language) > 5:
-            language = ''
+                            # Relationships
+                            num_friends_seen = form.num_friends_seen.data,
+                            is_close_to_family = form.is_close_to_family.data,
+                            isin_relationship = form.isin_relationship.data,
+                            wasin_relationship = form.wasin_relationship.data,
+                            depressed_today = form.depressed_today.data,
+                            anxious_today = form.anxious_today.data,
+                            stressed_today = form.stressed_today.data,
+                          )
 
-        # Build the Entry
-        entry = Entry(title = form.title.data,
-                      content = form.content.data,
-                      slug = re.sub('[^\w]+', '-', form.title.data.lower()),
-                      is_published = (not form.is_draft.data),
-                      timestamp = datetime.utcnow(),
-                      author = current_user,
-                      language = language,
-
-                      # Metric Info below
-                      word_semantics = semantics,
-                      mood_tags = mood_tags,
-                      sentiment = sentiment,
-                      polarity = polarity,
-                      attention = attention,
-                      sensitivity = sensitivity,
-                      pleasantness = pleasantness,
-                      aptitude = aptitude,
-
-                      depression_factor = depression_factor)
-
-        db.session.add(entry)
-        db.session.commit()
+            
+            db.session.add(response)
+            db.session.commit()
 
         # Redirect
-        flash('New Entry Composed!')
-        return redirect(url_for('entries', username = current_user.username))
+        flash('New Response Recorded!')
+        return redirect(url_for('questionaire', username = current_user.username))
 
-    return render_template('daily_logs.html', title = 'Daily Logs', form = form)
+    return render_template('questionaire.html', title = 'Questionaire', form = form)

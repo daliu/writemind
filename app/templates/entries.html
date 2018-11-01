@@ -7,21 +7,21 @@
     <div class="container">
         <h1>{{ current_user.username }}'s entries</h1>
         <div class="container">
-            {% for post in posts %}
+            {% for entry in entries %}
                 
-                    <p>{% include '_post.html' %}
-                        <a href = "{{ url_for('detail', username = current_user.username, slug = post.slug) }}">Read more</a>
+                    <p>{% include '_entry.html' %}
+                        <a href = "{{ url_for('detail', username = current_user.username, slug = entry.slug) }}">Read more</a>
                     </p>
 
                 
             {% endfor %}
 
             {% if prev_url %}
-                <a href="{{ prev_url }}">Newer posts</a>
+                <a href="{{ prev_url }}">Newer Entries</a>
             {% endif %}
 
             {% if next_url %}
-                <a href="{{ next_url }}">Older posts</a>
+                <a href="{{ next_url }}">Older Entries</a>
             {% endif %}
         </div>
     </div>
