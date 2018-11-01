@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+        <!-- <h1>{{ current_user.username }}'s Questionaire Form</h1> -->
+          <form action="{% block form_action %}{{ url_for('index') }}{% endblock %}" class="form-horizontal" method="post">
+          {{ form.hidden_tag() }}
+
+          <div class="form-group">
+            {{ form.is_student.label }}
+            <div class="col-md-12">
+              {{ form.is_student }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.has_occupation.label }}
+            <div class="col-md-12">
+              {{ form.has_occupation }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.weekly_work_hours.label }}
+            <div class="col-md-12">
+              {{ form.weekly_work_hours }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.hours_slept.label }}
+            <div class="col-md-12">
+              {{ form.hours_slept }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.sleep_time.label }}
+            <div class="col-md-12">
+              {{ form.sleep_time }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.wake_time.label }}
+            <div class="col-md-12">
+              {{ form.wake_time }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.sleep_quality.label }}
+            <div class="col-md-12">
+              {{ form.sleep_quality }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.num_meals.label }}
+            <div class="col-md-12">
+              {{ form.num_meals }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.num_snacks.label }}
+            <div class="col-md-12">
+              {{ form.num_snacks }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.diet_health_rating.label }}
+            <div class="col-md-12">
+              {{ form.diet_health_rating }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.has_hobby.label }}
+            <div class="col-md-12">
+              {{ form.has_hobby }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.does_volunteer.label }}
+            <div class="col-md-12">
+              {{ form.does_volunteer }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.has_exercised.label }}
+            <div class="col-md-12">
+              {{ form.has_exercised }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.type_of_exercise.label }}
+            <div class="col-md-12">
+              {{ form.type_of_exercise }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.exercise_quality.label }}
+            <div class="col-md-12">
+              {{ form.exercise_quality }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.min_exercised.label }}
+            <div class="col-md-12">
+              {{ form.min_exercised }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.has_laughed.label }}
+            <div class="col-md-12">
+              {{ form.has_laughed }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.had_mood_swing.label }}
+            <div class="col-md-12">
+              {{ form.had_mood_swing }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.mood_rating.label }}
+            <div class="col-md-12">
+              {{ form.mood_rating }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.num_friends_seen.label }}
+            <div class="col-md-12">
+              {{ form.num_friends_seen }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.is_close_to_family.label }}
+            <div class="col-md-12">
+              {{ form.is_close_to_family }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.isin_relationship.label }}
+            <div class="col-md-12">
+              {{ form.isin_relationship }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.wasin_relationship.label }}
+            <div class="col-md-12">
+              {{ form.wasin_relationship }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.depressed_today.label }}
+            <div class="col-md-12">
+              {{ form.depressed_today }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.anxious_today.label }}
+            <div class="col-md-12">
+              {{ form.anxious_today }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {{ form.stressed_today.label }}
+            <div class="col-md-12">
+              {{ form.stressed_today }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-12">
+              {{ form.submit(class = "btn btn-success") }}
+            </div>
+          </div>
+
+
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
