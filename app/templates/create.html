@@ -25,7 +25,20 @@
     }
   </style>
 
+<form action="{% block form_action %}{{ url_for('create') }}{% endblock %}" class="form-horizontal" method="post">
+    {{ form.hidden_tag() }}
+
     <div class="form-group">
+        {{ form.title.label }}
+      <div class="col-lg-12">
+        {{ form.title }}
+        {% for error in form.title.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </div>
+    </div>
+    
+     <div class="form-group">
         {{ form.content.label }}
       <div class="col-lg-12">
         {{ form.content }}
