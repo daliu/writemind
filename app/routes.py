@@ -337,13 +337,13 @@ def dashboard(username):
 #     else:
 #         return render_template('charge.html', key = stripe_keys['publishable_key'])
 
-@app.route('/questionaire/', methods = ['GET', 'POST'])
+@app.route('/log/', methods = ['GET', 'POST'])
 @login_required
-def questionaire():
+def log():
     if not current_user.is_authenticated:
         return redirect(url_for('index'))
 
-    form = QuestionaireForm()
+    form = LogForm()
     if form.validate_on_submit():    
         
         # language = guess_language(form.content.data)
@@ -351,53 +351,52 @@ def questionaire():
         #     language = ''
 
         # Build the Response
-        if form.validate_on_submit():
-            response =  SurveyResponse(user_id = current_user.id,
-                            timestamp = datetime.utcnow(),
+        response =  SurveyResponse(user_id = current_user.id,
+                        timestamp = datetime.utcnow(),
+                        
+                        # Occupation / Hours worked
+                        is_student = form.is_student.data,
+                        has_occupation = form.has_occupation.data,
+                        weekly_work_hours = form.weekly_work_hours.data,
 
-                            # Occupation / Hours worked
-                            is_student = form.is_student.data,
-                            has_occupation = form.has_occupation.data,
-                            weekly_work_hours = form.weekly_work_hours.data,
+                        # Sleep & Exercise
+                        hours_slept = form.hours_slept.data,
+                        sleep_time = form.sleep_time.data,
+                        wake_time = form.wake_time.data,
+                        sleep_quality = form.sleep_quality.data,
+                        num_meals = form.num_meals.data,
+                        num_snacks = form.num_snacks.data,
+                        diet_health_rating = form.diet_health_rating.data,
 
-                            # Sleep & Exercise
-                            hours_slept = form.hours_slept.data,
-                            sleep_time = form.sleep_time.data,
-                            wake_time = form.wake_time.data,
-                            sleep_quality = form.sleep_quality.data,
-                            num_meals = form.num_meals.data,
-                            num_snacks = form.num_snacks.data,
-                            diet_health_rating = form.diet_health_rating.data,
+                        # Exercise / Hobbies
+                        has_hobby = form.has_hobby.data,
+                        does_volunteer = form.does_volunteer.data,
+                        has_exercised = form.has_exercised.data,
+                        type_of_exercise = form.type_of_exercise.data,
+                        exercise_quality = form.exercise_quality.data,
+                        min_exercised = form.min_exercised.data,
 
-                            # Exercise / Hobbies
-                            has_hobby = form.has_hobby.data,
-                            does_volunteer = form.does_volunteer.data,
-                            has_exercised = form.has_exercised.data,
-                            type_of_exercise = form.type_of_exercise.data,
-                            exercise_quality = form.exercise_quality.data,
-                            min_exercised = form.min_exercised.data,
+                        # Mood
+                        has_laughed = form.has_laughed.data,
+                        had_mood_swing = form.had_mood_swing.data,
+                        mood_rating = form.mood_rating.data,
 
-                            # Mood
-                            has_laughed = form.has_laughed.data,
-                            had_mood_swing = form.had_mood_swing.data,
-                            mood_rating = form.mood_rating.data,
+                        # Relationships
+                        num_friends_seen = form.num_friends_seen.data,
+                        is_close_to_family = form.is_close_to_family.data,
+                        isin_relationship = form.isin_relationship.data,
+                        wasin_relationship = form.wasin_relationship.data,
+                        depressed_today = form.depressed_today.data,
+                        anxious_today = form.anxious_today.data,
+                        stressed_today = form.stressed_today.data,
+                      )
 
-                            # Relationships
-                            num_friends_seen = form.num_friends_seen.data,
-                            is_close_to_family = form.is_close_to_family.data,
-                            isin_relationship = form.isin_relationship.data,
-                            wasin_relationship = form.wasin_relationship.data,
-                            depressed_today = form.depressed_today.data,
-                            anxious_today = form.anxious_today.data,
-                            stressed_today = form.stressed_today.data,
-                          )
-
-            
-            db.session.add(response)
-            db.session.commit()
+        
+        db.session.add(response)
+        db.session.commit()
 
         # Redirect
         flash('New Response Recorded!')
-        return redirect(url_for('questionaire', username = current_user.username))
+        # return redirect(url_for('questionaire', username = current_user.username))
 
     return render_template('questionaire.html', title = 'Questionaire', form = form)

@@ -18,6 +18,10 @@ import nltk
 from collections import defaultdict
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 
+
+# import 
+
+
 # import pdb
 
 # import stripe
@@ -295,3 +299,27 @@ def labeling(s):
     words = nltk.tokenize.word_tokenize(s)
     found_words = [word for word in words if TextBlob(word).sentiment.polarity > 0.75]
     return found_words
+
+#################################
+### Comparing Feature Vectors
+#################################
+
+def dot(A,B):
+    return (sum(a*b for a,b in zip(A,B)))
+
+def get_cosine_similarity(a,b):
+    return dot(a,b) / ( (dot(a,a) **.5) * (dot(b,b) ** .5) )
+
+def extract_most_important_features(a, b, target_idxs=[]):
+    if len(a) != len(b):
+        print("Arrays have dissimilar lengths")
+        return -1
+    if target_idxs == []:
+        target_idxs = [i for i in range(len(a))]
+
+    return [a[i] for i in range(a)], [b[i] for i in range(b)]
+
+def get_averaged_features(data_lst):
+    avg = [float(sum(col))/len(col) for col in zip(*data_lst)]
+
+
